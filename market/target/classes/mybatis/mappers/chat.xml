@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.chat">
+	<resultMap id="chatroomResult" type="chatroomVO">
+		<result property="chatroom_id" column="chatroom_id" />
+		<result property="goods_id" column="goods_id"/>
+		<result property="buyer_id" column="buyer_id" />
+		<result property="seller_id" column="seller_id" />
+		<result property="buyer_market_image" column="buyer_market_image" />
+		<result property="seller_market_image" column="seller_market_image" />
+	</resultMap>
+	
+	<resultMap id="messageResult" type="messageVO">
+		<result property="message_id" column="message_id" />
+		<result property="chatroom_id" column="chatroom_id" />
+		<result property="message_contents" column="message_contents" />
+		<result property="message_sender" column="message_sender" />
+		<result property="message_receiver" column="message_receiver" />
+		<result property="message_senderTime" column="message_senderTime" />
+		<result property="message_read" column="message_read" />
+	</resultMap>
+	
+	<select id="selectNewChatroomNO" resultType="int">
+		<![CDATA[ 
+			SELECT NVL(MAX(chatroom_id), 0) FROM t_market_chatroom
+		]]>
+	</select>
+	
+	<insert id="insertChatroom" parameterType="chatroomVO">
+		<![CDATA[ 
+			INSERT INTO t_market_chatroom (chatroom_id, goods_id, buyer_id, seller_id)
+			VALUES (#{chatroom_id}, #{goods_id}, #{buyer_id}, #{seller_id})
+		]]>
+	</insert>
+	
+	<select id="overlapChatroom" parameterType="chatroomVO" resultType="chatroomVO">
+		<![CDATA[ 
+			SELECT * FROM t_market_chatroom
+			WHERE buyer_id=#{buyer_id} AND seller_id=#{seller_id} AND goods_id=#{goods_id}
+		]]>
+	</select>
+	
+	<select id="selectChatroomList" parameterType="String" resultType="String">
+		<![CDATA[ 
+			SELECT c.chatroom_id
+			FROM t_market_chatroom c, t_market_message m
+			WHERE c.chatroom_id = m.chatroom_id
+			      AND (buyer_id=#{id} OR seller_id=#{id})
+			GROUP BY c.chatroom_id
+			ORDER BY MAX(message_senderTime) DESC
+		]]>
+	</select>
+	
+	<select id="selectNewMessageNO" resultType="int">
+		<![CDATA[ 
+			SELECT NVL(MAX(message_id), 0) FROM t_market_message
+		]]>
+	</select>
+	
+	<insert id="insertMessage" parameterType="messageVO">
+		<![CDATA[ 
+			INSERT INTO t_market_message (message_id, chatroom_id, message_contents, message_sender, message_receiver)
+			VALUES (#{message_id}, #{chatroom_id}, #{message_contents}, #{message_sender}, #{message_receiver})
+		]]>
+	</insert>
+	
+	<select id="selectMessageList" parameterType="int" resultMap="messageResult">
+		<![CDATA[ 
+			SELECT * FROM t_market_message
+			WHERE chatroom_id = #{chatroom_id}
+			ORDER BY message_senderTime
+		]]>
+	</select>
+	
+	<select id="selectChatroom" parameterType="int" resultType="chatroomVO">
+		<![CDATA[ 
+			SELECT * FROM t_market_chatroom
+			WHERE chatroom_id = #{chatroom_id}
+		]]>
+	</select>
+	
+	<select id="selectNoReadMessage" parameterType="messageVO" resultMap="messageResult">
+		<![CDATA[ 
+			SELECT * FROM t_market_message
+			WHERE chatroom_id = #{chatroom_id} 
+				  AND message_receiver = #{message_receiver}
+				  AND message_read = 'no_read'
+		]]>
+	</select>
+	
+	<update id="updateMessageRead" parameterType="messageVO">
+		<![CDATA[ 
+			UPDATE t_market_message
+			SET message_read = 'read'
+			WHERE chatroom_id = #{chatroom_id} AND message_receiver = #{message_receiver} AND message_read = 'no_read'
+		]]>
+	</update>
+	
+	<select id="selectChatMemberList" parameterType="java.util.Map" resultType="String">
+		<![CDATA[ 
+			SELECT buyer_id
+			FROM t_market_chatroom
+			WHERE seller_id = #{seller_id} AND goods_id = #{goods_id} 
+		]]>
+	</select>
+	
+	<select id="existedChatroom" parameterType="chatroomVO" resultType="chatroomVO">
+		<![CDATA[ 
+			SELECT * FROM t_market_chatroom
+			WHERE goods_id=#{goods_id} AND seller_id=#{seller_id} AND buyer_id=#{buyer_id}
+		]]>
+	</select>
+
+</mapper>

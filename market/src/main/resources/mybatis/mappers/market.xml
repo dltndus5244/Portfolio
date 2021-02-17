@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.market">
+	<insert id="insertMarket" parameterType="String">
+		<![CDATA[ 
+			INSERT INTO t_member_market (member_id, market_name)
+			VALUES (#{member_id}, #{member_id})
+		]]>
+	</insert>
+	
+	<select id="selectMyMarketInfo" parameterType="String" resultType="marketVO">
+		<![CDATA[ 
+			SELECT * FROM t_member_market
+			WHERE member_id = #{member_id}
+		]]>
+	</select>
+	
+	<update id="updateMarketName" parameterType="marketVO">
+		<![CDATA[ 
+			UPDATE t_member_market
+			SET market_name = #{market_name}
+			WHERE member_id = #{member_id}
+		]]>
+	</update>
+	
+	<update id="updateMarketImage" parameterType="java.util.Map">
+		<![CDATA[ 
+			UPDATE t_member_market
+			SET market_image = #{market_image}
+			WHERE member_id = #{member_id}
+		]]>
+	</update>
+</mapper>

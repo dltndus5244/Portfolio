@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.review">
+	<resultMap id="reviewResult" type="reviewVO">
+		<result property="review_id" column="review_id" />
+		<result property="seller_id" column="seller_id" />
+		<result property="buyer_id" column="buyer_id" />
+		<result property="goods_id" column="goods_id" />
+		<result property="review_contents" column="review_contents" />
+		<result property="review_star" column="review_star" />
+		<result property="goods_title" column="goods_title" />
+		<result property="market_image" column="market_image" />
+	</resultMap>
+	
+	<select id="selectNewReviewNO" resultType="int">
+		<![CDATA[ 
+			SELECT NVL(MAX(review_id), 0) FROM t_market_review
+		]]>
+	</select>
+	
+	<insert id="insertReview" parameterType="reviewVO">
+		<![CDATA[ 
+			INSERT INTO t_market_review (review_id, buyer_id, seller_id, goods_id)
+			VALUES (#{review_id}, #{buyer_id}, #{seller_id}, #{goods_id})
+		]]>
+	</insert>
+	
+	<select id="selectReview" parameterType="java.util.Map" resultType="reviewVO">
+		<![CDATA[ 
+			SELECT * FROM t_market_review
+			WHERE goods_id = #{goods_id} AND buyer_id = #{buyer_id}
+		]]>
+	</select>
+	
+	<update id="writeReview" parameterType="reviewVO">
+		<![CDATA[ 
+			UPDATE t_market_review
+			SET review_contents = #{review_contents}, review_star = #{review_star}
+			WHERE review_id = #{review_id}
+		]]>
+	</update>
+	
+	<select id="selectReviewList" parameterType="String" resultMap="reviewResult">
+		<![CDATA[ 
+			SELECT r.*, g.goods_title, m.market_image
+			FROM t_market_review r, t_market_goods g, t_member_market m
+			WHERE r.seller_id = #{member_id}
+                  AND r.goods_id = g.goods_id
+                  AND r.buyer_id = m.member_id
+                  AND r.review_star IS NOT NULL
+		]]>
+	</select>
+	
+	<delete id="deleteReview" parameterType="int">
+		<![CDATA[ 
+			DELETE FROM t_market_review
+			WHERE goods_id=#{goods_id}
+		]]>
+	</delete>
+</mapper>

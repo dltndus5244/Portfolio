@@ -1,0 +1,945 @@
+@font-face {
+     font-family: 'S-CoreDream-5Medium';
+     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-5Medium.woff') format('woff');
+     font-weight: normal;
+     font-style: normal;
+}
+@font-face {
+     font-family: 'Handon3gyeopsal300g';
+     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.2/Handon3gyeopsal300g.woff') format('woff');
+     font-weight: normal;
+     font-style: normal;
+}
+* {
+	margin: 0px; padding: 0px; vertical-align: middle;
+	font-family: 'S-CoreDream-5Medium', sans-serif;
+	font-size: 13px; 
+}
+
+article {
+	width: 1000px; 
+}
+
+body {
+	background-position: top; 
+	padding: 0px; 
+	height : 100%;
+}
+
+a {
+	color: rgb(0, 0, 0); 
+	text-decoration: none;
+}
+
+a:hover {
+	color: rgb(255, 102, 0); 
+	text-decoration: none;
+}
+
+.clear {
+	clear: both;
+}
+
+#outer_wrap {
+	margin: 0px auto; 
+	padding: 0px; 
+	width: 1150px;
+}
+#wrap {
+	margin: 0px auto; 
+	padding: 0px; 
+	width: 1000px; 
+	float: left;
+}
+
+/* 프로필사진  */
+
+.profile {
+   width : 90px;
+   height : 90px;
+   border-radius: 50px;
+}
+
+/* 헤더 */
+input:focus {
+	outline : none;
+}
+header {
+	z-index : 100000;
+	width : 100%;
+	height : 130px;
+	background-color : white;
+	display:inline;
+	position : fixed;
+	top : 0;
+	left : 0;
+	border-bottom : 1px solid #dcdcdc;
+}
+header #logo {
+	margin-left: 220px; 
+	margin-top : 30px;
+	float: left;
+}
+header #search {
+	margin: 30px 0px 0px 190px; 
+	padding: 0px; 
+	float: left;
+}
+header #search .main_input {
+	padding: 0px 5px; 
+	border: 2px solid #FF8C0A; 
+	border-image: none; 
+	width: 350px; 
+	height: 30px;
+}
+header #search .btn1 {
+	border: 1px solid #FFB85A; 
+	border-image: none; 
+	width: 55px; 
+	height: 28px; 
+	color: white; 
+	font-weight : bold;
+	margin-left: 2px; 
+	background-color: #FFB85A;
+}
+
+header #head_link {
+	font-size : 10px;
+	margin-right: 250px; 
+	margin-top : 35px;
+	float: right;
+}
+header #head_link ul {
+	list-style: none;
+}
+header #head_link li {
+	padding: 0px 8px; 
+	float: left;
+}
+#head_link .no_line {
+	border-right-color: currentColor; 
+	border-right-width: medium; 
+	border-right-style: none;
+}
+header #category {
+	position : absolute;
+	top: 90px;
+	left: 230px;
+}
+header #category ul{
+	padding-left : 30px;
+	padding-bottom : 5px;
+	list-style : none;
+	display : none;
+	z-index : 999;
+	margin-top : 10px;
+	background-color : white;
+	width : 200px;
+}
+header #category ul li {
+	padding-top : 4px;
+	font-size : 22px;
+}
+
+/* 푸터  */
+footer {
+	background-position: top; 
+	margin: 50px 0px 0px;
+	font-size : 0.9em; 
+}
+footer ul {
+	list-style: none; 
+	margin: 0px 0px 0px 210px;
+}
+footer ul li {
+	background-position: right; 
+	float: left;
+
+}
+footer ul li.no_line {
+	background-image: none;
+}
+footer ul li a {
+	padding: 5px 15px; 
+	display: block;
+}
+footer img {
+	margin: 10px 0px 0px 40px; 
+	width: 150px; 
+	float: left;
+}
+
+aside {
+	padding-top : 65px;
+	width: 205px; 
+	float: left;
+}
+nav {
+	margin: 25px 0px 0px 10px; 
+	font-size: 0.8em;
+}
+nav ul {
+	list-style: none;
+}
+nav ul li {
+	padding: 5px 10px; 
+	text-transform: uppercase;
+}
+nav ul li a {
+	display: block;
+}
+nav ul li h3 {
+	background-position: top; 
+	padding: 5px 20px; 
+	border-radius: 20px; 
+	border: 1px solid rgb(204, 204, 204); 
+	border-image: none; 
+	text-transform: capitalize; 
+	font-size: 14px; 
+	background-color: rgb(229, 229, 229);
+}
+nav ul li ul {
+	margin: 10px 0px 0px;
+}
+nav ul li ul li {
+	padding: 0px 0px 0px 20px; 
+	line-height: 2em;
+}
+
+/* 메인화면 상품리스트 */
+article #itemList {
+	margin-top : 70px;
+	margin-left : 60px;
+}
+.goods {
+	float : left;
+	width : 180px;
+	height : 230px;
+	border : 1px solid #dcdcdc;
+	margin-bottom : 10px;
+}
+.goods img {
+	margin-bottom : 7px;
+}
+.goods .title {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.goods .title, .goods .price {
+	margin-left : 8px;
+	margin-bottom : 3px;
+}
+#main_goods {
+	margin-left : 50px;
+}
+
+/* 모달 */
+.modal-wrapper {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0; 
+  left: 0;
+  background: rgba(72, 72, 72, 0.7);
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.25s ease-in-out;
+  z-index : 100001;
+}
+
+.modal-wrapper.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal {
+  width: 400px;
+  height: 300px;
+  display: block;
+  margin: 50% 0 0 -300px;
+  position: relative;
+  top: 45%; 
+  left: 55%;
+  background: #fff;
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+}
+
+.modal-wrapper.open .modal {
+  margin-top: -200px;
+  opacity: 1;
+}
+
+.modal-head { 
+  height: 30px;
+  padding: 12px 30px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.btn-close {
+  font-size: 25px;
+  display: block;
+  float: right;
+  color: #5A5A5A;
+}
+
+/* 모달 로그인  */
+#login {
+	padding-left : 60px;
+	padding-top : 20px;
+}
+#login table {
+	border-spacing: 20px;
+  	border-collapse: separate;
+}
+#loginBtn {
+	width : 220px;
+	margin-left : 30px;
+	margin-top : 10px;
+}
+
+/* 회원가입 */
+#memberForm {
+	margin-top : 100px;
+	margin-left : 380px;
+	min-height : 400px;
+}
+#memberForm table {
+	border-spacing: 20px;
+  	border-collapse: separate;
+}
+#memberForm #btnOverlapped {
+    background-color: white;
+    border: 0;
+    outline : 0;
+    color: #969696;
+    padding: 10px 0;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1em;
+    font-weight : bold;
+    margin: 4px;
+    cursor: pointer;
+}
+#member_btn {
+	margin-left : 680px;
+	width : 100px;
+}
+
+/* 비밀번호 변경 */
+#modifyPw {
+	margin-left : 60px;
+	margin-top : 15px;
+}
+#modifyPw h2 {
+	font-size : 16px;
+	margin-bottom : 20px;
+}
+#modifyPw input {
+	margin-bottom : 7px;
+}
+#modifyPw #new_member_pw {
+	margin-left : 38px;
+}
+#modifyPw #new_member_pw_2 {
+	margin-left : 10px;
+}
+#modifyPw #pwBtn {
+	width : 80px;
+	margin-top : 20px;
+	margin-left : 200px;
+}
+
+/* 디테일 테이블..? 어디서 쓰는지 모르겠다 */
+#detail_table {
+	padding-top : 100px;
+	padding-left : 30px;
+	width : 500px;
+	font-size: 0.9em;
+	margin : 0 auto;
+}
+#detail_table table { 
+	border-collapse: collapse;
+}
+#detail_table table td {
+	padding: 7px 0px 7px 10px;
+}
+
+/* 상품 상세 */
+#goods_image {
+	padding-left : 70px;
+	float : left;
+	visibility : hidden;
+	opacity : 0;
+}
+#goods_detail {
+	width : 1000px;
+	margin : 0 auto;
+	padding-top : 100px;
+	padding-left : 30px;
+}
+#goods_remain {
+	width : 400px;
+	height : 400px;
+	float : left;
+	margin-left : 50px;
+}
+#goods_remain #goods_status {
+	padding-top : 90px;
+	font-size : 18px;
+	color : #94EB3E;
+}
+#goods_contents {
+	float : left;
+	width : 650px;
+	padding-top : 20px;
+	padding-left : 70px;
+	white-space : pre-line;
+}
+#goods_contents h3 {
+	font-size : 16px;
+	padding-bottom : 10px;
+	border-bottom:1px solid rgba(63,148,148, 0.1);
+}
+#member_market {
+	width : 220px;
+	margin-top : 20px;
+	float : right;
+}
+#member_market h3 {
+	font-size : 16px;
+	padding-bottom : 10px;
+	border-bottom:1px solid rgba(63,148,148, 0.1);
+}
+#member_market img {
+	width : 100px;
+	height : 100px;
+	margin-top : 10px;
+	margin-bottom : 10px;
+}
+#member_market #more {
+	border : 1px solid #c8c8c8;
+	padding : 2px;
+}
+
+/* 상품등록 */
+#goodsForm {
+	width : 800px;	
+	margin-left : 250px;
+	padding-top : 100px;
+	padding-left : 50px;
+	
+}
+#goodsForm h3 {
+	margin-left : 20px;
+	font-size : 16px;
+	padding-bottom : 10px;
+}
+#goodsForm table {
+	border-spacing: 20px;
+  	border-collapse: separate;
+}
+#goodsForm .btn {
+	margin-left : 370px;
+}
+
+/* 상품 수정 */
+#modifyGoodsForm {
+	width : 800px;	
+	margin-left : 250px;
+	padding-top : 100px;
+	padding-left : 50px;
+}
+#modifyGoodsForm table {
+	border-spacing: 20px;
+  	border-collapse: separate;
+}
+#modifyGoodsForm .btn {
+	margin-left : 370px;
+}
+#modifyGoodsForm h3 {
+	margin-left : 20px;
+	font-size : 16px;
+	padding-bottom : 10px;
+}
+#modifyImageForm {
+	width : 800px;	
+	margin-left : 250px;
+	padding-left : 50px;
+}
+
+/* 마켓  - 메인*/
+.market_main {
+	float : left;
+	height : 180px;
+	width : 800px;
+	margin-top : 100px;
+	margin-left : 180px;
+	padding : 20px;
+	border-bottom : 1px solid #ddd;
+}
+.d_market_image {
+
+	width : 120px;
+	float : left;
+}
+.d_market_image img {
+	margin-left : 20px;
+}
+.filebox label {
+  font-size : 12px;
+  width : 120px;
+  color : black;
+  line-height: normal;
+  background-color: white;
+  cursor: pointer;
+  -webkit-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+}
+
+.filebox input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+#image_btn {
+	margin-left : 20px;
+	width : 60px;
+	height : 33px;
+	font-size : 9px;
+}
+.d_market_name {
+	margin-left : 160px;
+}
+.d_market_name .market_name {
+	margin-top : 20px;
+	border : none;
+	background-color : white;
+	color : black;
+	font-size : 16px;
+}
+#enable_btn, #name_mod_btn {
+	margin-top : 20px;
+	font-size : 12px;
+	color : #323232;
+}
+
+/* 마켓 - 탭메뉴 */
+.tabs_menu {
+	min-height : 300px;
+    width: 850px;
+    margin-left : 180px;
+    margin-top : 50px;
+    background: #ffffff;
+}
+
+.tabs_content {
+    display: none;
+    padding: 20px 0 0;
+    border-top: 1px solid #ddd;
+}
+
+label {
+	width : 70px;
+    display: inline-block;
+    margin: 0 0 -1px;
+    padding-left : 10px;
+    padding-right : 10px;
+    padding-top : 10px;
+    padding-bottom : 10px;
+    font-weight: 600;
+    text-align: center;
+    color: #bbb;
+    border: 1px solid transparent;
+}
+
+label:hover {
+    color: #FF8224;
+    cursor: pointer;
+}
+
+.tabs {
+	display : none; 
+}
+
+input:checked + label {
+      color: #555;
+      border: 1px solid #ddd;
+      border-top: 2px solid #FF8224;
+      border-bottom: 1px solid #ffffff;
+}
+
+#tab1:checked ~ #content1,
+#tab2:checked ~ #content2,
+#tab3:checked ~ #content3,
+#tab4:checked ~ #content4,
+#tab5:checked ~ #content5 {
+    display: block;
+}
+
+.tabs_content h3 {
+	font-size : 16px;
+	padding-bottom : 10px;
+	color: black;
+	border-bottom:1px solid rgba(63,148,148, 0.1);
+}
+.tabs_content h3 span {
+	font-size : 16px;
+	padding-bottom : 10px;
+	color: black;
+	border-bottom:1px solid rgba(63,148,148, 0.1);
+}
+#content1 table img {
+	margin : 10px;
+}
+#content1 table {
+	border-spacing: 20px;
+  	border-collapse: separate;
+}
+#content1 #goods_modify_btn {
+	color : black;
+}
+#content1 #goods_remove_btn {
+	color : red;
+}
+#content2 #buyer_goods {
+	margin-right : 20px;
+	height : 250px;
+}
+#content2 #buyer_goods input {
+	float : right;
+	color : #FF895A;
+}
+#content3 #heart_goods {
+	margin-right : 20px;
+}
+#review {
+	padding-top : 10px;
+	padding-bottom : 10px;
+	border-bottom : 1px solid #ddd;
+}
+#review_image {
+	float : left;
+	margin-right : 20px;
+}
+#review_image img {
+	width : 70px;
+	height : 70px;
+}
+#review_contents {
+	margin-left : 90px;
+}
+#review_contents p {
+	padding : 5px;
+	display : inline-block;
+	border : 1px solid #c8c8c8;
+	margin-bottom : 10px;
+	font-size : 11px;
+}
+#market_goods {
+	width : 1000px;
+	padding-left : 200px;
+}
+#market_goods img {
+	margin : 5px;
+}
+
+/* 리뷰  작성*/
+#review_modal {
+	margin-left : 60px;
+}
+.r_comment {
+	margin-top : 10px;
+	margin-left : 25px;
+	font-size : 17px;
+}
+#r_goods_image {
+	margin-left : 30px;
+	float : left;
+}
+#d_goods_title {
+	margin-left : 160px; 
+	margin-top : 15px;
+}
+
+#d_review_form {
+	margin-left : 30px;
+	margin-top : 20px;
+}
+.star_rating {
+	margin-left : 50px;
+	font-size:0; 
+	letter-spacing:-10px;
+}
+.star_rating a {
+	font-weight : bold;
+    font-size:35px;
+    letter-spacing:0;
+    display:inline-block;
+    margin-left:5px;
+    color:#aaaaaa;
+    text-decoration:none;
+}
+.star_rating a:first-child {margin-left:0;}
+.star_rating a.on {color:#FFE400;}
+#r_review_btn {
+	width:100px;
+    background-color: #FFB85A;
+    border: 0;
+    outline : 0;
+    color:#fff;
+    padding: 10px 0;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.7em;
+    font-weight : bold;
+    margin-top : 10px;
+    margin-left : 237px;
+    cursor: pointer;
+}
+#r_review_btn:active {
+	background-color : #FF8224;
+}
+textarea {
+	outline: none;
+	resize:none
+}
+
+/* 비밀번호 변경 모달 */
+#pw_modal {
+	margin-left : 60px;
+	margin-top : 50px;
+}
+#pw_modal input {
+	margin-bottom : 10px;
+}
+
+/* 버튼들  */
+#goods_btn {
+	margin-top : 30px;
+}
+#heart_up_btn {
+	width:130px;
+    background-color: #CFCFCF;
+    border: none;
+    color:#fff;
+    padding: 15px 0;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1em;
+    font-weight : bold;
+    margin: 4px;
+    cursor: pointer;
+    
+}
+#heart_down_btn {
+	width:130px;
+    background-color: #FF7171;
+    border: 0;
+    outline : 0;
+    color:#fff;
+    padding: 15px 0;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1em;
+    font-weight : bold;
+    margin: 4px;
+    cursor: pointer;
+}
+#chat_btn {
+	width:130px;
+    background-color: #FFB85A;
+    border: 0;
+    outline : 0;
+    color:#fff;
+    padding: 15px 0;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1em;
+    font-weight : bold;
+    margin: 4px;
+    cursor: pointer;
+}
+.btn {
+    width:130px;
+    background-color: #FFB85A;
+    border: 0;
+    outline : 0;
+    color:#fff;
+    padding: 10px 0;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1em;
+    font-weight : bold;
+    margin: 4px;
+    cursor: pointer;
+ }
+
+#mod_btn {
+	margin-left : 55px;
+	margin-top : 30px;
+}
+.btn:active {
+	background-color : #FF8224;
+}
+.white_btn {
+	background-color: white;
+    border: 0;
+    outline : 0;
+    color: black;
+    padding: 10px 0;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1em;
+    font-weight : bold;
+    margin: 4px;
+    cursor: pointer;
+}
+.white_btn:hover {
+	color : #FF8224;
+}
+
+/* 채팅방 메인 */
+#chatroomList #chatMainHead {
+	background-color: #FFB85A;
+	width : 410px;
+	height : 50px;
+}
+#chatMainHead img {
+	margin-left : 180px;
+	margin-top : 10px;
+}
+#chatroomList table {
+	width : 410px;
+    border-collapse: collapse;
+}
+#chatroomList table td {
+    padding: 15px;
+}
+.noreadCircle {
+	width : 15px;
+	height : 15px;
+	background : #FF5442;
+	border-radius : 50%;
+	font-size : 8px;
+	color : white;
+	text-align : center;
+}
+
+/* 기존 채팅방 */
+.chatData {
+	width : 410px;
+	margin-bottom : 110px;
+	margin-top : 150px;
+}
+.chatHead {
+	float : left;
+	width : 410px;
+	height : 135px;
+	position : fixed;
+	top : 0;
+	left : 0;
+	z-index : 100;
+	border-bottom : 1px solid #c8c8c8;
+	background-color : white;
+}
+.chatHead .goChatMain {
+	width : 410px;
+	height : 50px;
+	background-color: #FFB85A;
+}
+.chatHead .goChatMain img {
+	float : left;
+	margin-top : 10px;
+}
+.chatHead img {
+	margin-left : 5px;
+	margin-top : 5px;
+}
+.chatHead .chatHeadImage {
+	float : left;
+	width : 100px;
+	height : 80px;
+}
+.chatHead .chatHeadRemain {
+	float : left;
+	margin-top : 20px;
+}
+.chatHead .chatHeadRemain h3 {
+	font-size : 15px;
+}
+#myChat {
+	width : 400px;
+	padding-right : 10px;
+	text-align : right;
+}
+.my_ballon {
+  position:relative;
+  border-radius: 10px;
+  margin : 5px;
+  background-color : #EF8B47;
+  display:inline-block;
+  padding : 7px;
+  font-size : 12px;
+  color : white;
+}
+#yourChat {
+	width : 410px;
+	padding-left : 5px;
+}
+.your_balloon {
+  position:relative;
+  background:#333333;
+  border-radius: 10px;
+  margin-left : 30px;
+  background-color : #dcdcdc;
+  display:inline-block;
+  padding : 7px;
+  font-size : 12px;
+}
+
+#sendMessage {
+	border-top : 1px solid #c8c8c8;
+	width : 410px;
+	height : 100px;
+	position : fixed;
+	bottom : 0;
+	left : 0;
+	z-index : 100;
+	background-color : white;
+}
+#sendMessage #sendBtn {
+	width : 40px;
+	height : 30px;
+    background-color: #FFB85A;
+    border: 0;
+    outline : 0;
+    color:#fff;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-weight : bold;
+    cursor: pointer;
+}
+
+/* 구매자 선택 모달창 */
+#buyer_modal {
+	margin-left : 60px;
+	margin-top : 20px;
+}
+
+
