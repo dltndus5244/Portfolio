@@ -74,7 +74,7 @@ function login() {
 </head>
 		<div id="logo">
 			<a href="${contextPath}/main/main.do">
-				<img width="150" src="${contextPath}/resources/image/logo.png">
+				<img width="60" height="50" style="margin-left:50px" src="${contextPath}/resources/image/market_logo.png">
 			</a>
 		</div>
 		

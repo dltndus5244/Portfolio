@@ -12,92 +12,204 @@
 <title>Insert title here</title>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
-	var overlapped = false;
-	function fn_overlapped() {
-		overlapped = true;
-		
-		var _id = $("#_member_id").val();
-		if (_id == '') {
-			alert("아이디를 입력하세요.");
-			return;
-		}
-		
-		$.ajax({
-			type:"post",
-			async:false,
-			url:"${contextPath}/member/overlapped.do",
-			dataType:"text",
-			data:{id:_id},
-			success:function(data, textStatus) {
-				if (data == '') {
-					alert("사용할 수 있는 아이디입니다.");
-					$("#btnOverlapped").prop("disabled", true);
-					
-				} else {
-					alert("사용할 수 없는 아이디입니다.");
-				}
-			},
-			error:function(data, textStatus) {
-				alert("에러가 발생했습니다.");
-			},
-			complete:function(data, textStatus) {
+
+$(document).ready(function(){
+	  //한글입력 안되게 처리
+	  $("input[name=member_id]").keyup(function(event){ 
+		   if (!(event.keyCode >=37 && event.keyCode<=40)) {
+			    var inputVal = $(this).val();
+			    $(this).val(inputVal.replace(/[^a-z0-9]/gi,''));
+		   }
+	  });
+	  
+	  //전화번호 숫자만 입력되게 처리
+	  $("input[name=tel2]").keyup(function(event){ 
+		   if (!(event.key >= 0 && event.key <= 9)) {
+			   var inputVal = $(this).val();
+			   $(this).val(inputVal.replace(/[^0-9]/gi,''));
+		   }
+	  });
+	  
+	  $("input[name=tel3]").keyup(function(event){ 
+		   if (!(event.key >= 0 && event.key <= 9)) {
+			   var inputVal = $(this).val();
+			   $(this).val(inputVal.replace(/[^0-9]/gi,''));
+		   }
+	  });
+	  
+});
+
+var overlapped = false;
+
+//아이디 중복 검사 함수
+function fn_overlapped() {
+	overlapped = true;
 	
-			}
-		});
+	var _id = $("#_member_id").val();
+	if (_id == '') {
+		alert("아이디를 입력하세요.");
+		return;
 	}
 	
-	function fn_setEmail(obj) {
-		var email2 = obj.value;
-		$("#email2").val(email2);
-		
-	}
-	
-	function addMember() {
-		var form = document.getElementById("joinForm");
-		var write = true;
-		var member_id = document.getElementById("_member_id").value;
-		var member_pw = document.getElementById("_member_pw").value;
-		
-		var r_member_gender = document.getElementsByName("member_gender");
-		var checked = false;
-		for(var i=0;i<r_member_gender.length;i++){
-			if(r_member_gender[i].checked == true){ 
-				checked = true;
-			}
-		}
-		
-		var tel2 = document.getElementById("tel2").value;
-		var tel3 = document.getElementById("tel3").value;
-		var email1 = document.getElementById("email1").value;
-		var email2 = document.getElementById("email2").value;
+	//아이디 중복 검사 ajax
+	$.ajax({
+		type:"post",
+		async:false,
+		url:"${contextPath}/member/overlapped.do",
+		dataType:"text",
+		data:{id:_id},
+		success:function(data, textStatus) {
+			if (data == '') {
+				alert("사용할 수 있는 아이디입니다.");
+				$("#btnOverlapped").prop("disabled", true);
 				
-		if (!member_id) {
-			write = false;
+			} else {
+				alert("사용할 수 없는 아이디입니다.");
+			}
+		},
+		error:function(data, textStatus) {
+			alert("에러가 발생했습니다.");
+		},
+		complete:function(data, textStatus) {
+
 		}
-		else if (!member_pw) {
-			write = false;
-		}
-		else if (!tel2) {
-			write = false;
-		}
-		else if (!tel3) {
-			write = false;
-		}
-		else if (!email1) {
-			write = false;
-		}
-		else if (!email2) {
-			write = false;
-		}
+	});
+}
+
+function fn_setEmail(obj) {
+	var email2 = obj.value;
+	$("#email2").val(email2);
+	
+}
+
+//회원 추가 함수
+function addMember() {
+	var form = document.getElementById("joinForm");
+	var write = true;
+	var member_id = document.getElementById("_member_id").value;
+	var member_pw = document.getElementById("_member_pw").value;
+	var email_auth = document.getElementById("authCode").value;
 		
-		if (checked == false || write == false)
-			alert('필수 입력 사항을 모두 입력해주세요.');
-		else if (overlapped == false)
-			alert('아이디 중복체크를 해주세요.');
-		else {
-			form.submit();
+	//필수 입력 항목 예외처리
+	var r_member_gender = document.getElementsByName("member_gender");
+	var checked = false;
+	for(var i=0;i<r_member_gender.length;i++){
+		if(r_member_gender[i].checked == true){ 
+			checked = true;
 		}
 	}
+	
+	var tel2 = document.getElementById("tel2").value;
+	var tel3 = document.getElementById("tel3").value;
+	var email1 = document.getElementById("email1").value;
+	var email2 = document.getElementById("email2").value;
+			
+	if (!member_id) {
+		write = false;
+	}
+	else if (!member_pw) {
+		write = false;
+	}
+	else if (!tel2) {
+		write = false;
+	}
+	else if (!tel3) {
+		write = false;
+	}
+	else if (!email1) {
+		write = false;
+	}
+	else if (!email2) {
+		write = false;
+	}
+	
+	if (member_id && member_id.length < 6) {
+		alert('아이디를 6자 이상으로 입력해주세요.');
+		return;
+	}
+	
+	if (!email_auth && write == true) {
+		alert('이메일 인증번호를 입력해주세요.');
+		return;
+	}
+		
+	if (checked == false || write == false)
+		alert('필수 입력 사항을 모두 입력해주세요.');
+	else if (overlapped == false)
+		alert('아이디 중복체크를 해주세요.');
+	else {
+		form.submit();
+	}
+}
+
+var send_click = false;
+function sendEmail() {
+	var email1 = document.getElementById("email1").value;
+	var email2 = document.getElementById("email2").value;
+	
+	if (!email1 || !email2) {
+		alert("이메일을 입력해주세요.");
+		return;
+	}
+	
+	var email = email1 + "@" + email2;
+	
+	$.ajax({
+		type : "post",
+		async : false, 
+		url : "${contextPath}/member/sendAuthMail.do",
+		data : {
+			email : email
+		},
+		success : function(data, textStatus) {
+			alert("인증 번호를 발송하였습니다.");
+			send_click = true;
+		},
+		error : function(data, textStatus) {
+			alert("에러가 발생했습니다."+data);
+		}
+	}); 
+	
+}
+
+function checkAuth() {
+	var authCode = document.getElementById("authCode").value;
+	var sendBtn = document.getElementById("sendBtn");
+	var checkBtn = document.getElementById("checkBtn");
+	
+	if (send_click == false) {
+		alert("인증번호를 받지 않았습니다. '인증번호 받기' 버튼을 눌러주세요.");
+		return;
+	}
+	
+	if (!authCode) {
+		alert("인증번호를 입력해주세요.");
+		return;
+	}
+	
+	$.ajax({
+		type : "post",
+		async : false, 
+		url : "${contextPath}/member/checkAuthCode.do",
+		data : {
+			authCode : authCode
+		},
+		success : function(data, textStatus) {
+			if (data == "success") {
+				alert("인증이 성공하였습니다.");
+				sendBtn.style.display = "none";
+				checkBtn.style.display = "none";
+			}
+			else {
+				alert("인증번호가 일치하지 않습니다. 다시 입력해주세요.");
+			}
+		},
+		error : function(data, textStatus) {
+			alert("에러가 발생했습니다."+data);
+		}
+	}); 
+	
+}
 </script>
 </head>
 <body>
@@ -109,17 +221,20 @@
 					<tr class="dot_line">
 						<td class="fixed_join">아이디</td>
 						<td>
-							<input type="text" name="member_id" id="_member_id" size="20" />
+							<input type="text" name="member_id" id="_member_id" size="20" maxlength="14"/>
 							<input type="button" id="btnOverlapped" value="중복체크" onClick="fn_overlapped()" />
+						</td>
+						<td>
+							<p style="font-size:9px; color:#828282">* 영어와 숫자만 입력가능합니다.</p>
 						</td>
 					</tr>
 					<tr class="dot_line">
 						<td class="fixed_join">비밀번호</td>
-						<td><input type="password" id="_member_pw" name="member_pw" size="20" /></td>
+						<td><input type="password" id="_member_pw" name="member_pw" size="20" maxlength="18"/></td>
 					</tr>
 					<tr class="dot_line">
 						<td class="fixed_join">이름</td>
-						<td><input type="text" name="member_name" size="20" /></td>
+						<td><input type="text" name="member_name" size="20" maxlength="10"/></td>
 					</tr>
 					<tr class="dot_line">
 						<td class="fixed_join">성별</td>
@@ -162,13 +277,13 @@
 								<option value="019">019</option>
 							</select>
 							-
-							<input type="text" id="tel2"name="tel2" size="10" />
+							<input type="text" id="tel2"name="tel2" size="10" maxlength="4"/>
 							-
-							<input type="text" id="tel3" name="tel3" size="10" /><br><br>
+							<input type="text" id="tel3" name="tel3" size="10" maxlength="4"/><br><br>
 						</td>
 					</tr>
 					<tr class="dot_line">
-						<td class="fixed_join">이메일<br></td>
+						<td class="fixed_join">이메일</td>
 						<td>
 							<input type="text" id="email1" name="email1" size="10">&nbsp;@&nbsp;<input type="text" name="email2" id="email2" size="10" />
 							<select name="email" onChange="fn_setEmail(this)" title="직접입력">
@@ -179,8 +294,17 @@
 								<option value="nate.com">nate.com</option>
 								<option value="gmail.com">gmail.com</option>
 								<option value="kakao.com">kakao.com</option>
-	
 							</select>
+						</td>
+						<td>
+							<input type="button" id="sendBtn" onclick="sendEmail()" class="white_btn" style="font-size:12px" value="인증번호 받기">
+						</td>
+					</tr>
+					<tr class="dot_line">
+						<td class="fixed_join">이메일 인증번호</td>
+						<td>
+							<input type="text" id="authCode" size="20">
+							<input type="button" id="checkBtn" onclick="checkAuth()" value="확인" class="white_btn" style="font-size:12px">	
 						</td>
 					</tr>
 				</tbody>

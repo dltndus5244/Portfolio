@@ -84,6 +84,19 @@
 	<beans:bean id="newChatHandler" class="com.myspring.market.chat.handler.NewChatHandler"/>
 	<beans:bean id="noticeHandler" class="com.myspring.market.chat.handler.NoticeHandler"/>
 	
+	<!-- 이메일 인증 -->
+	<beans:bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	    <beans:property name="host" value="smtp.gmail.com" />
+	    <beans:property name="port" value="587" />
+	    <beans:property name="username" value="dltndus5244@gmail.com" />
+	    <beans:property name="password" value="didtmdgh0517!" />
+	    <beans:property name="javaMailProperties">
+		    <beans:props>
+		    	<beans:prop key="mail.smtp.auth">true</beans:prop>
+		    	<beans:prop key="mail.smtp.starttls.enable">true</beans:prop>
+		    </beans:props>
+	    </beans:property>
+  	</beans:bean>
 </beans:beans>
 
 

@@ -14,7 +14,6 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
 import com.myspring.market.member.vo.MemberVO;
 
 public class LoginHandshakeInterceptor extends HttpSessionHandshakeInterceptor {
-
 	@Override
 	public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
 			Map<String, Object> attributes) throws Exception {
@@ -27,10 +26,6 @@ public class LoginHandshakeInterceptor extends HttpSessionHandshakeInterceptor {
 		
 		attributes.put("member_id", member_id);
 		
-		System.out.println("로그인 인터셉터 : " + member_id);
 		return super.beforeHandshake(request, response, wsHandler, attributes);
 	}
-
-
-	
 }

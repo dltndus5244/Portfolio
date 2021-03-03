@@ -15,12 +15,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>상품 상세 페이지</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 <script type="text/javascript">
+
 	$(document).ready(function(){
 	    $('.bxslider').bxSlider( {
 	        mode: 'horizontal',
@@ -35,6 +36,7 @@
 	    });
 	});
 
+	//상품의 찜 개수와 회원의 찜 목록을 업데이트 해주는 함수(증가)
 	function fn_heart_up(goods_id) {
 		var member_id = "${memberInfo.member_id}";
 		
@@ -48,6 +50,7 @@
 		
 		var heart_num;
 		
+		//상품의 찜 개수를 증가시켜주는 ajax
 		$.ajax({
 			type : "post",
 			async : false, 
@@ -61,13 +64,10 @@
 			},
 			error : function(data, textStatus) {
 				alert("에러가 발생했습니다."+data);
-			},
-			complete : function(data, textStatus) {
-				//alert("작업을완료 했습니다");
-				
 			}
-		}); //end ajax
+		});
 		
+		//회원의 찜 목록에 상품을 추가하는 ajax
 		$.ajax({
 			type : "post",
 			async : false, 
@@ -80,12 +80,8 @@
 			},
 			error : function(data, textStatus) {
 				alert("에러가 발생했습니다."+data);
-			},
-			complete : function(data, textStatus) {
-				//alert("작업을완료 했습니다");
-				
 			}
-		}); //end ajax
+		}); 
 		
 		heart_up_btn.style.display = "none";
 		heart_down_btn.style.display = "inline";
@@ -93,11 +89,14 @@
 		
 	}
 	
+	//상품의 찜 개수와 회원의 찜 목록을 업데이트 해주는 함수(감소)
 	function fn_heart_down(goods_id) {
 		var heart_up_btn = document.getElementById("heart_up_btn");
 		var heart_down_btn = document.getElementById("heart_down_btn");
 		
 		var heart_num;
+		
+		//상품의 찜 개수를 감소시켜주는 ajax
 		$.ajax({
 			type : "post",
 			async : false, 
@@ -111,13 +110,10 @@
 			},
 			error : function(data, textStatus) {
 				alert("에러가 발생했습니다."+data);
-			},
-			complete : function(data, textStatus) {
-				//alert("작업을완료 했습니다");
-				
 			}
-		}); //end ajax
+		}); 
 		
+		//회원의 찜 목록에서 상품을 제거하는 ajax
 		$.ajax({
 			type : "post",
 			async : false, 
@@ -130,18 +126,15 @@
 			},
 			error : function(data, textStatus) {
 				alert("에러가 발생했습니다."+data);
-			},
-			complete : function(data, textStatus) {
-				//alert("작업을완료 했습니다");
-				
 			}
-		}); //end ajax
+		}); 
 		
 		heart_up_btn.style.display = "inline"; 
 		heart_up_btn.value = "❤ 찜 " + heart_num;
 		heart_down_btn.style.display = "none";
 	}
 	
+	//채팅버튼 클릭 시 채팅창 띄워주는 함수
 	function fn_chat_form() {
 		var member_id = "${memberInfo.member_id}";
 		if (member_id == "") {
@@ -154,6 +147,7 @@
 
 	}
 	
+	//상품 상세 창으로 이동
 	function detailGoods(goods_id) {
 		var form = document.createElement("form");
 		
@@ -170,6 +164,7 @@
 		form.submit();
 	}
 	
+	//마켓 창으로 이동 
 	function marketMain(member_id) {
 		var form = document.createElement("form");
 		
@@ -198,6 +193,7 @@
 </head>
 <body>
 	<div id="goods_detail">
+		<!-- 슬라이더로 상품 이미지를 보여줌 -->
 		<div id="goods_image">
 			<ul class="bxslider">
 				<c:forEach var="i" begin="0" end="${fn:length(imageFileList)-1}">
@@ -208,18 +204,23 @@
 				</c:forEach>
 			</ul>
 		</div>
+		
+		<!-- 상품 제목, 가격, 거래지역, 상태, 채팅 버튼, 찜 버튼 -->
 		<div id="goods_remain">
 			<h2 style="font-size:24px;">${goods.goods_title}</h2><br>
 			<h2 style="font-size:24px"><fmt:formatNumber value="${goods.goods_price}" type="number" />원</h2><br><br>
 			<h4 style="font-size:15px">거래지역&nbsp;&nbsp;&nbsp;&nbsp;${goods.goods_location1}&nbsp;${goods.goods_location2}</h4><br>
+			
 			<c:choose>
-					<c:when test="${goods.goods_status == '거래완료'}">
-						<h4 id="goods_status" style="color:#b4b4b4">${goods.goods_status}</h4>
-					</c:when>
-					<c:otherwise>
-						<h4 id="goods_status" style="color:#8AE634">${goods.goods_status}</h4>
-					</c:otherwise>
-				</c:choose>
+				<c:when test="${goods.goods_status == '거래완료'}">
+					<h4 id="goods_status" style="color:#b4b4b4">${goods.goods_status}</h4>
+				</c:when>
+				<c:otherwise>
+					<h4 id="goods_status" style="color:#8AE634">${goods.goods_status}</h4>
+				</c:otherwise>
+			</c:choose>
+			
+			<!-- 상품이 거래완료일 경우와 내가 등록한 상품일 경우에는 찜 버튼과 채팅 버튼을 보여주지 않음  -->
 			<c:choose>
 				<c:when test="${marketInfo.member_id != memberInfo.member_id && goods.goods_status != '거래완료'}">
 					<div id="goods_btn">
@@ -228,6 +229,8 @@
 								<c:set var="heartListIn" value="있음" />
 							</c:if>
 						</c:forEach>
+						
+						<!-- 회원의 찜 목록에 있을 경우와 없을 경우를 다르게 표시해줌 -->
 						<c:choose>
 							<c:when test="${heartListIn == '있음' }">
 								<input id="heart_up_btn" type="button" value="❤ 찜 ${goods.heart_num}" onclick="fn_heart_up(${goods.goods_id})"  style="display:none"/>
@@ -243,6 +246,7 @@
 				</c:when>
 			</c:choose>
 		</div>
+		
 		<div class="clear"></div>
 		
 		<div id="goods_contents">
@@ -250,6 +254,7 @@
 			${goods.goods_contents}
 		</div>
 		
+		<!-- 상품 판매자의 마켓 정보 -->
 		<div id="member_market">
 			<h3>마켓 정보</h3>
 			<a href="javascript:void(0)" onclick="marketMain('${marketInfo.member_id}')">
@@ -265,6 +270,7 @@
 			${marketInfo.market_name}<br>
 			<span>상품</span> <span style="color:red">${goodsNum}</span>
 			<br><br>
+			
 			<c:choose>
 				<c:when test="${goodsNum <= 2}">
 					<c:forEach var="item" items="${marketGoodsList}">

@@ -1,12 +1,16 @@
 package com.myspring.market.member.controller;
 
 import java.io.PrintWriter;
+import java.util.Random;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.myspring.market.heart.service.HeartService;
 import com.myspring.market.member.service.MemberService;
 import com.myspring.market.member.vo.MemberVO;
 
@@ -26,6 +29,8 @@ public class MemberController {
 	private MemberService memberService;
 	@Autowired
 	private MemberVO memberVO;
+	@Autowired
+	private JavaMailSender mailSender;
 	
 	@RequestMapping(value="/*Form.do", method=RequestMethod.GET)
 	public ModelAndView memberForm(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -34,6 +39,7 @@ public class MemberController {
 		return mav;
 	}
 	
+	//멤버 추가
 	@RequestMapping(value="/addMember.do", method=RequestMethod.POST)
 	public ModelAndView addMember(@ModelAttribute("memberVO") MemberVO memberVO,
 						  HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -45,6 +51,7 @@ public class MemberController {
 		return mav;
 	}
 	
+	//아이디 중복 검사
 	@RequestMapping(value="/overlapped.do", method=RequestMethod.POST)
 	@ResponseBody
 	public String overlappedID(@RequestParam("id") String id,
@@ -53,6 +60,7 @@ public class MemberController {
 		return result;
 	}
 	
+	//로그인
 	@RequestMapping(value="/login.do", method=RequestMethod.POST)
 	public void login(@ModelAttribute("memberVO") MemberVO memberVO,
 							   HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -83,6 +91,7 @@ public class MemberController {
 		}
 	}
 	
+	//로그아웃
 	@RequestMapping(value="/logout.do", method=RequestMethod.GET)
 	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession();
@@ -95,6 +104,7 @@ public class MemberController {
 		return mav;
 	}
 	
+	//회원 정보 수정
 	@RequestMapping(value="/modifyMyInfo.do", method=RequestMethod.POST)
 	@ResponseBody
 	public String modifyMyInfo(@ModelAttribute("memberVO") MemberVO memberVO,
@@ -115,6 +125,7 @@ public class MemberController {
 		return "mod_success";
 	}
 	
+	//비밀번호 수정
 	@RequestMapping(value="/modifyMyPw.do", method=RequestMethod.POST)
 	@ResponseBody
 	public String modifyMyPw(@RequestParam("member_pw") String member_pw,
@@ -131,4 +142,54 @@ public class MemberController {
 		return "mod_success";	
 	}
 	
+	//인증 번호 메일 전송
+	@RequestMapping(value="/sendAuthMail.do", method=RequestMethod.POST)
+	public void sendAuthMail(@RequestParam("email") String email,
+							HttpServletRequest request, HttpServletResponse response) throws Exception {
+		Random r = new Random();
+		String authCode = "";
+		
+		for (int i=0; i<15; i++) {
+			int num = (int) 48 + (int) (r.nextDouble() * 74);
+			authCode += (char) num;
+		}
+		
+		String setFrom = "dltndus5244@gmail.com";
+		String toMail = email;
+		String title = "[USED MARKET] 회원가입 인증 이메일 입니다.";
+		String content = "인증번호는 " + authCode + "입니다.";
+		
+		try {
+			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+			
+			messageHelper.setFrom(setFrom);
+			messageHelper.setTo(toMail);
+			messageHelper.setSubject(title);
+			messageHelper.setText(content);
+			
+			mailSender.send(message);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("authCode", authCode);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/checkAuthCode.do", method=RequestMethod.POST)
+	public String checkAuthCode(@RequestParam("authCode") String authCode,
+							  HttpServletRequest request, HttpServletResponse response) throws Exception {
+		HttpSession session = request.getSession();
+		String s_authCode = (String) session.getAttribute("authCode");
+	
+		if (s_authCode != null && s_authCode.equals(authCode)) {
+			session.removeAttribute("authCode");
+			return "success";
+		}
+		else
+			return "false";
+		
+	}
 }

@@ -1,7 +1,5 @@
 package com.myspring.market.goods.controller;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -14,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,18 +24,13 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.myspring.market.chat.service.ChatService;
-import com.myspring.market.common.file.S3Util;
 import com.myspring.market.common.file.UploadController;
 import com.myspring.market.goods.service.GoodsService;
 import com.myspring.market.goods.vo.GoodsVO;
 import com.myspring.market.goods.vo.ImageFileVO;
 import com.myspring.market.heart.service.HeartService;
 import com.myspring.market.heart.vo.HeartVO;
-import com.myspring.market.member.service.MemberService;
 import com.myspring.market.member.vo.MemberVO;
 
 @Controller("goodsController")
@@ -64,10 +56,10 @@ public class GoodsController {
 		Map<String, Object> goodsMap = goodsService.goodsDetail(goods_id);
 		mav.addObject("goodsMap", goodsMap);
 		
-		//찜 목록 
 		HttpSession session = request.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
 		
+		//찜 목록 
 		if (memberVO != null) {
 			String member_id = memberVO.getMember_id();
 			List<HeartVO> memberHeartList = heartService.getMemberHeartList(member_id);
@@ -77,6 +69,7 @@ public class GoodsController {
 		return mav;
 	}
 	
+	//상품 등록 창
 	@RequestMapping(value="/newGoodsForm.do", method=RequestMethod.GET)
 	public ModelAndView newGoodsForm(HttpServletRequest request, RedirectAttributes rttr) throws Exception {
 		HttpSession session = request.getSession();
@@ -94,7 +87,6 @@ public class GoodsController {
 		return mav;
 	}
 	
-	//다중 파일 추가용 업로드
 	public List<ImageFileVO> getImageFileList(MultipartHttpServletRequest request) throws Exception {
 		List<ImageFileVO> fileList = new ArrayList<ImageFileVO>();
 		Iterator<String> fileNames = request.getFileNames();
@@ -120,6 +112,7 @@ public class GoodsController {
 		return fileList;
 	}
 	
+	//상품 등록
 	@RequestMapping(value="/addNewGoods.do", method=RequestMethod.POST)
 	public void addNewGoods(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setContentType("text/html; charset=utf-8");
@@ -175,6 +168,7 @@ public class GoodsController {
 		}
 	}
 	
+	//상품 찜 개수 증가
 	@RequestMapping(value="/upGoodsHeartNum.do", method=RequestMethod.POST)
 	public void upGoodsHeartNum(@RequestParam("goods_id") int goods_id,
 								HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -184,6 +178,7 @@ public class GoodsController {
 		writer.print(heart_num);
 	}
 	
+	//상품 찜 개수 감소
 	@RequestMapping(value="/downGoodsHeartNum.do", method=RequestMethod.POST)
 	public void downGoodsHeartNum(@RequestParam("goods_id") int goods_id,
 								HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -193,6 +188,7 @@ public class GoodsController {
 		writer.print(heart_num);
 	}
 	
+	//상품 삭제
 	@RequestMapping(value="/deleteGoods.do", method=RequestMethod.POST)
 	public void deleteGoods(@RequestParam("goods_id") int goods_id,
 							HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -218,6 +214,7 @@ public class GoodsController {
 		}
 	}
 	
+	//상품 수정 창
 	@RequestMapping(value="/modifyGoodsForm.do", method= {RequestMethod.POST, RequestMethod.GET})
 	public ModelAndView modifyGoodsForm(@RequestParam("goods_id") int goods_id,
 										HttpServletRequest request, RedirectAttributes rttr) throws Exception {
@@ -238,6 +235,7 @@ public class GoodsController {
 		return mav;
 	}
 	
+	//상품 이미지 삭제
 	@RequestMapping(value="/removeGoodsImageFile.do", method=RequestMethod.POST)
 	public void removeGoodsImageFile(@RequestParam("image_id") int image_id,
 									 @RequestParam("goods_id") int goods_id,
@@ -265,6 +263,7 @@ public class GoodsController {
 		out.flush();
 	}
 	
+	//새로운 상품 이미지 추가
 	@RequestMapping(value="/addNewGoodsImage.do", method=RequestMethod.POST)
 	public void addNewGoodsImage(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
 		Enumeration enu = request.getParameterNames();
@@ -299,6 +298,7 @@ public class GoodsController {
 		}
 	}
 	
+	//상품 이미지 수정
 	@RequestMapping(value="/modifyGoodsImageFile.do", method=RequestMethod.POST)
 	public void modifyGoodsImageFile(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
 		Enumeration enu = request.getParameterNames();
@@ -332,6 +332,7 @@ public class GoodsController {
 		}
 	}
 	
+	//상품 정보 수정(이미지 제외)
 	@RequestMapping(value="/modifyGoodsInfo.do", method=RequestMethod.POST)
 	public ModelAndView modifyGoodsInfo(@ModelAttribute("goodsVO") GoodsVO goodsVO,
 										HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -343,6 +344,7 @@ public class GoodsController {
 		return mav;
 	}
 	
+	//상품 상태 변경(예약중, 판매중, 거래완료)
 	@RequestMapping(value="/modifyGoodsStatus.do", method=RequestMethod.POST)
 	public void modifyGoodsStatus(@RequestParam("goods_status") String goods_status,
 								  @RequestParam("goods_id") int goods_id,
@@ -354,6 +356,7 @@ public class GoodsController {
 		goodsService.modifyGoodsStatus(statusMap);
 	}
 	
+	//상품 검색
 	@RequestMapping(value="/searchGoods.do", method=RequestMethod.POST)
 	public ModelAndView searchGoods(@RequestParam(value="sort", required=false, defaultValue="new") String sort,
 									@RequestParam("keyword") String keyword,
@@ -385,6 +388,7 @@ public class GoodsController {
 		return mav;
 	}
 	
+	//스크롤 시 상품 검색
 	@ResponseBody
 	@RequestMapping(value="/scrollSearchGoods.do", method=RequestMethod.POST)
 	public List<GoodsVO> scrollSearchGoods(@RequestParam("sort") String sort,

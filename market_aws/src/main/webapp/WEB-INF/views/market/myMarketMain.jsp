@@ -39,10 +39,11 @@
 .star_rating p:first-child {margin-left:0;}
 .star_rating p.on {color:#FFE400;}
 </style>
+
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
 
-//마켓 이름 변경
+//마켓 이름 수정 버튼 클릭 시 디자인 변경
 function abled_market_name() {
 	var i_market_name = document.getElementById("market_name");
 	var enable_btn = document.getElementById("enable_btn");
@@ -56,6 +57,7 @@ function abled_market_name() {
 	mod_btn.style.display = "inline";
 }
 
+//마켓 이름 변경 함수
 function modify_market_name() {
 	var i_market_name = document.getElementById("market_name");
 	var enable_btn = document.getElementById("enable_btn");
@@ -63,6 +65,7 @@ function modify_market_name() {
 	
 	var market_name = i_market_name.value;
 	
+	//마켓 이름을 변경해주는 ajax
 	$.ajax({
 		type:"post",
 		async:false,
@@ -79,7 +82,7 @@ function modify_market_name() {
 		},
 		error:function(data, textStatus) {
 			alert("에러가 발생했습니다." + data);
-		},
+		}
 	});
 	
 	enable_btn.style.display = "inline";
@@ -88,16 +91,17 @@ function modify_market_name() {
 	i_market_name.style.border = "none";
 }
 
-//회원정보, 상품상태 Select Box 초기화
 window.onload = function() {
 	selectBoxInit();
 }
 
+//회원정보, 상품상태 Select Box 초기화
 function selectBoxInit() {
 	var selTel1 = document.getElementById('tel1');
 	var optionTel1 = selTel1.options;	
 	var tel1 = '${memberInfo.tel1}';
-					
+	
+	//전화번호 selectBox 초기화
 	for (var i=0; i<optionTel1.length; i++) {
 		if (optionTel1[i].value == tel1) {
 			optionTel1[i].selected = true;
@@ -105,6 +109,7 @@ function selectBoxInit() {
 		}
 	}
 	
+	//상품 상태 selectBox 초기화
 	var myGoodsListSize = "${myGoodsListSize}";
 	for (var i=0; i<myGoodsListSize; i++) {
 		var selStatus = document.getElementById("goods_status"+i);
@@ -116,9 +121,7 @@ function selectBoxInit() {
 			$("#goods_modify_btn"+i).attr('disabled', 'true');
 			$("#goods_modify_btn"+i).css({color:"#969696"});
 		}
-	}
-	
-	
+	}	
 }
 
 function fn_setEmail(obj) {
@@ -127,11 +130,11 @@ function fn_setEmail(obj) {
 	
 }
 
-//회원 정보 변경
+//회원 정보 변경 함수
 function fn_modify_info() {
 	var frm_mod_member = document.frm_mod_member;
 
-	//성별
+	//성별 가져옴
 	var member_gender;
 	var f_member_gender = frm_mod_member.member_gender;
 	for (var i=0; i<f_member_gender.length; i++) {
@@ -141,7 +144,7 @@ function fn_modify_info() {
 		}
 	}
 	
-	//생년월일
+	//생년월일 가져옴
 	var f_member_birth_y = frm_mod_member.member_birth_y;
 	var f_member_birth_m = frm_mod_member.member_birth_m;
 	var f_member_birth_d = frm_mod_member.member_birth_d;
@@ -168,7 +171,7 @@ function fn_modify_info() {
 		}
 	}
 	
-	//전화번호
+	//전화번호 가져옴
 	var f_tel1 = frm_mod_member.tel1;
 	var tel1;
 	
@@ -186,10 +189,11 @@ function fn_modify_info() {
 	if (f_tel2.value) tel2 = f_tel2.value;
 	if (f_tel3.value) tel3 = f_tel3.value;
 	
-	//이메일
+	//이메일 가져옴
 	var email1 = document.getElementById("email1").value;
 	var email2 = document.getElementById("email2").value;
 	
+	//변경된 데이터
 	var updateData = {
 			member_gender : member_gender,
 			member_birth_y : member_birth_y,
@@ -202,6 +206,7 @@ function fn_modify_info() {
 			email2 : email2,
 	}; 
 	
+	//변경된 회원 정보를 전달해주는 ajax
 	$.ajax({
 		type : "post",
 		async : false, 
@@ -214,14 +219,11 @@ function fn_modify_info() {
 		},
 		error : function(data, textStatus) {
 			alert("에러가 발생했습니다."+data);
-		},
-		complete : function(data, textStatus) {
-				
 		}
 	}); 
 }
 
-//상품 지우기
+//상품 삭제 함수
 function fn_delete_goods(goods_id) {
 	var form = document.createElement("form");
 	
@@ -255,13 +257,14 @@ function fn_modify_goods_form(goods_id) {
 	form.submit();
 }
 
-//마켓 이미지 변경
+//마켓 이미지 변경 함수
 function modify_market_image(member_id) {
 	var form = document.getElementById("marketImageForm");
 	var formData = new FormData(form);
 	
 	formData.append("member_id", member_id);
 	
+	//변경할 마켓 이미지를 전달해주는 ajax
 	$.ajax({
 		   url: '${contextPath}/market/modifyMarketImage.do',
 		   processData: false,
@@ -278,7 +281,8 @@ function modify_market_image(member_id) {
 var pre_goods_status;
 var goods_index;
 var no_goods_id;
-//상품 상태(예약중, 거래완료, 판매중) 변경 
+
+//상품 상태(예약중, 거래완료, 판매중) 변경  함수
 function fn_modify_status(index, goods_id) {
 	goods_index = index;
 	
@@ -288,8 +292,11 @@ function fn_modify_status(index, goods_id) {
 	var seller_id = "${memberInfo.member_id}";
 	var chatMemberList;
 	
+	//변경 할 상품 상태가 '거래완료'일 경우 먼저 구매자 선택을 해야함
 	if (goods_status == '거래완료') {
 		var buyerMap = null;
+		
+		//상품에 대해 채팅을 한 기록이 있는 회원 리스트를 가져옴
 		$.ajax({
 			type : "post",
 			async : false, 
@@ -332,7 +339,7 @@ function fn_modify_status(index, goods_id) {
 		
 		$('#buyer_wrapper').toggleClass('open');
 
-	} else {
+	} else { //나머지의 경우 상품 상태를 바로 변경함
 		$.ajax({
 			type : "post",
 			async : false, 
@@ -351,12 +358,13 @@ function fn_modify_status(index, goods_id) {
 	}
 }
 
+//구매자 선택 모달 창 닫기 
 function closeBuyerForm() {
 	$("#buyer_wrapper").toggleClass('open');
 	$("#goods_status"+goods_index).val(pre_goods_status).prop("selected", true);
 }
 
-//구매자 선택
+//구매자 선택 함수
 function select_buyer_id(buyer_id, goods_id) {
 	var seller_id = "${memberInfo.member_id}";
 	var select_status = document.getElementById("goods_status"+goods_index);
@@ -401,6 +409,7 @@ function select_buyer_id(buyer_id, goods_id) {
 
 }
 
+//구매자 선택을 하지 않았을 경우 상품 상태만 변경함
 function no_buyer() {
 	var goods_status = "거래완료";
 	var goods_id = no_goods_id;
@@ -423,7 +432,7 @@ function no_buyer() {
 	$('#goods_status'+goods_index).attr('disabled', 'true');
 }
 
-//상품 디테일 창으로 이동
+//상품 상세 창으로 이동
 function detailGoods(goods_id) {
 	var form = document.createElement("form");
 	
@@ -440,7 +449,7 @@ function detailGoods(goods_id) {
 	form.submit();
 }
 
-//멤버 마켓 화면으로 이동(리뷰에서)
+//회원 마켓 화면으로 이동
 function marketMain(member_id) {
 	var form = document.createElement("form");
 	
@@ -466,7 +475,7 @@ function closeModifyForm() {
 	$("#pw_wrapper").toggleClass('open');
 }
 
-//비밀번호 수정
+//비밀번호 수정 함수
 function fn_modify_pw() {
 	var member_pw = document.getElementById("new_member_pw").value;
 	var member_pw2 = document.getElementById("new_member_pw_2").value;
@@ -487,21 +496,15 @@ function fn_modify_pw() {
 			},
 			error : function(data, textStatus) {
 				alert("에러가 발생했습니다."+data);
-			},
-			complete : function(data, textStatus) {
-				//alert("작업을완료 했습니다");
-				
 			}
-		}); //end ajax
-		
-		close();
+		});
+
 	} else {
 		alert('다시 입력해주세요');
 	}
-	
 }
 
-//마켓 이미지 미리보기
+//이미지 미리보기
 function readURL(input,preview) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -521,12 +524,14 @@ function init_review() {
 	$("#r_review_contents").attr("readonly", false);
 }
 
-//리뷰 모달 띄우기
 var review_id = 0;
+
+//리뷰 모달 띄우기
 function openReviewForm(goods_id) {
 	var buyer_id = "${memberInfo.member_id}";
 	var reviewMap = null;
 
+	//리뷰를 작성했는지 확인하기 위해서 reviewMap(goods, review)를 가져옴
 	$.ajax({
 			type : "post",
 			async : false, 
@@ -540,9 +545,6 @@ function openReviewForm(goods_id) {
 			},
 			error : function(data, textStatus) {
 				alert("에러가 발생했습니다."+textStatus);
-			},
-			complete : function(data, textStatus) {
-				
 			}
 	});
 	
@@ -552,10 +554,12 @@ function openReviewForm(goods_id) {
 	
 	init_review();
 	
+	//작성된 리뷰가 없을 경우
 	if (!review.review_star && !review.review_contents) {
 		$(".r_comment").text('거래가 완료되었다면 리뷰를 작성해주세요!'); 
 		$("#r_review_btn").show();
 	}
+	//작성된 리뷰가 있을 경우
 	else {
 		$(".r_comment").text('이미 리뷰를 작성하셨습니다.'); 
 		
@@ -589,7 +593,7 @@ function openReviewForm(goods_id) {
 	
 }
 
-//리뷰 작성
+//리뷰 작성 함수
 function write_review() {
 	var review_contents = document.getElementById("r_review_contents").value;
 	var review_star = $('.on').length;
@@ -597,6 +601,7 @@ function write_review() {
 	if (review_star == 0 || !review_contents)
 		alert('리뷰를 작성해주세요.');
 	else {
+		//리뷰 작성에 필요한 데이터(리뷰 아이디, 리뷰 내용, 리뷰 별점)을 보내는 ajax
 	 	$.ajax({
 			type : "post",
 			async : false, 
@@ -624,7 +629,6 @@ function closeReviewForm() {
 	$('#review_wrapper').toggleClass('open');
 }
 
-
 $(document).ready(function() {
 	$(".star_rating a").click(function() {
 	    $(this).parent().children("a").removeClass("on");
@@ -641,6 +645,7 @@ function delete_goods_alert() {
 <body>
 	<div class="market_main">
 		<form id="marketImageForm" enctype="multipart/form-data">
+			<!-- 마켓 이미지 -->
 			<div class="d_market_image">
 				<c:choose>
 						<c:when test="${not empty marketInfo.market_image}">
@@ -657,6 +662,8 @@ function delete_goods_alert() {
 					<input type="button" id="image_btn" class="btn" value="이미지 등록" onclick="modify_market_image('${marketInfo.member_id}')"/>
 				</div>
 			</div>
+			
+			<!-- 마켓 이름 -->
 			<div class="d_market_name">
 				<input type="text" style="font-weight:bold" id="market_name" class="market_name" value="${marketInfo.market_name}" disabled/>
 				<input type="button" class="white_btn" id="enable_btn" value="마켓이름 수정" onclick="abled_market_name()"/>
@@ -664,6 +671,7 @@ function delete_goods_alert() {
 			</div>
 		</form>
 	</div>
+	
 	<div class="clear"></div>
 	
 	<div class="tabs_menu">
@@ -682,6 +690,7 @@ function delete_goods_alert() {
 	    <input id="tab5" type="radio" name="tabs" class="tabs">
 	    <label for="tab5">정보수정</label>
 
+		<!-- 회원이 등록한 상품 리스트 -->
 	    <section id="content1" class="tabs_content">
 	        <h3><span>상품</span> <span style="color:red">${fn:length(myGoodsList)}</span></h3>
 	        <table>
@@ -693,6 +702,7 @@ function delete_goods_alert() {
 	        		<td> </td>
 	        		<td> </td>
 	        	</tr>
+	        	
 		        <c:forEach var="goods" items="${myGoodsList}" varStatus="status">
 		        		<tr align="center">
 		        			<td>
@@ -732,6 +742,7 @@ function delete_goods_alert() {
 	        </table>
 	    </section>
 	
+		<!-- 구매 리스트 -->
 	    <section id="content2" class="tabs_content">
 	        <h3><span>구매</span> <span style="color:red">${fn:length(buyerGoodsList)}</span></h3>
 	        <br>
@@ -757,6 +768,7 @@ function delete_goods_alert() {
 	        </c:choose>
 	    </section>
 	
+		<!-- 찜 리스트 -->
 	    <section id="content3" class="tabs_content">
 	        <h3><span>찜</span> <span style="color:red">${fn:length(memberHeartList)}</span></h3>
 	        <br>
@@ -774,6 +786,7 @@ function delete_goods_alert() {
 	        </c:forEach>
 	    </section>
 	    
+	    <!-- 마켓 후기 -->
 	    <section id="content4" class="tabs_content">
 	        <h3><span>후기</span> <span style="color:red">${fn:length(reviewList)}</span></h3>
 	        <br>
@@ -839,6 +852,7 @@ function delete_goods_alert() {
 	        </c:forEach>
 	    </section>
 	
+		<!-- 회원 정보 수정 -->
 	    <section id="content5" class="tabs_content">
 	        <h3>회원 정보 수정</h3>
 	        <form name="frm_mod_member">

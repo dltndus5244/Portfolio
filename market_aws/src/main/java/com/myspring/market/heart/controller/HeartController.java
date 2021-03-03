@@ -8,12 +8,9 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.myspring.market.heart.service.HeartService;
 import com.myspring.market.heart.vo.HeartVO;
 import com.myspring.market.member.vo.MemberVO;
@@ -26,6 +23,7 @@ public class HeartController {
 	@Autowired
 	private HeartVO heartVO;
 	
+	//회원 찜 목록에 상품 추가
 	@RequestMapping(value="/addMemberHeart.do", method=RequestMethod.POST)
 	public void addMemberHeart(@RequestParam("goods_id") int goods_id,
 							   HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -39,6 +37,7 @@ public class HeartController {
 		heartService.addMemberHeart(heartVO);
 	}
 	
+	//회원 찜 목록에 상품 제거
 	@RequestMapping(value="/removeMemberHeart.do", method=RequestMethod.POST)
 	public void removeMemberHeart(@RequestParam("goods_id") int goods_id,
 							   HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -52,6 +51,7 @@ public class HeartController {
 		heartService.removeMemberHeart(heartVO);
 	}
 	
+	//회원 찜 목록 가져오기
 	@RequestMapping(value="/getMemberHeartList.do", method=RequestMethod.POST)
 	public void getMemberHeartList(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession();

@@ -41,17 +41,15 @@ public class S3Util {
 		conn.setEndpoint("s3.us-east-2.amazonaws.com"); // 엔드포인트 설정 [ 아시아 태평양 서울 ] --나는 미국
 	}
 	
-	// 버킷 리스트를 가져오는 메서드이다.
 	public List<Bucket> getBucketList() {
 		return conn.listBuckets();
 	}
 	
-	// 버킷을 생성하는 메서드이다.
 	public Bucket createBucket(String bucketName) {
 		return conn.createBucket(bucketName);
 	}
 	
-	// 폴더 생성 (폴더는 파일명 뒤에 "/"를 붙여야한다.)
+	// 폴더 생성(폴더는 파일명 뒤에 "/"를 붙여야함)
 	public void createFolder(String bucketName, String folderName) {
 		conn.putObject(bucketName, folderName + "/", new ByteArrayInputStream(new byte[0]), new ObjectMetadata());
 	}
@@ -72,11 +70,12 @@ public class S3Util {
         }
 	}
 	
-	// 파일 삭제
+	//파일 삭제
 	public void deleteFile(String bucketName, String filePath) {
 		conn.deleteObject(bucketName, filePath);
 	}
 	
+	//상품 폴더 삭제
 	public void deleteGoodsFolder(String bucketName, int goods_id) {
 		String folderName = "market/file_repo/" + goods_id;
 		ObjectListing objects = conn.listObjects(bucketName, folderName);

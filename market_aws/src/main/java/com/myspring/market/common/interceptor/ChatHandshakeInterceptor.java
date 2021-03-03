@@ -30,10 +30,6 @@ public class ChatHandshakeInterceptor extends HttpSessionHandshakeInterceptor {
 		attributes.put("member_id", member_id);
 		attributes.put("chatroom_id", chatroom_id);
 		
-		System.out.println("기존 채팅 인터셉터 : " + member_id + "/" + chatroom_id);
 		return super.beforeHandshake(request, response, wsHandler, attributes);
 	}
-
-
-	
 }

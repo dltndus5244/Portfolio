@@ -16,13 +16,12 @@ h3 {
 	margin-bottom : 20px;
 }
 </style>
+
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
-var msg = "${msg}";
-if (msg)
-	alert(msg);
 
 var start = 1;
+//무한 스크롤
 $(document).scroll(function() {
 	var maxHeight = $(document).height();
 	var currentScroll = $(window).scrollTop() + $(window).height();
@@ -31,6 +30,8 @@ $(document).scroll(function() {
 	var goodsList = null;
 	if (maxHeight <= currentScroll + 50) {
 		start = start + 12;
+		
+		//컨트롤러에 상품 시작 인덱스(start)를 전달하여 상품 리스트를 받아오는 ajax
 		$.ajax({
 			type:"post",
 			async:false,
@@ -65,6 +66,7 @@ $(document).scroll(function() {
 	}
 });
 
+//상품 상세 창으로 이동
 function detailGoods(goods_id) {
 	var form = document.createElement("form");
 	

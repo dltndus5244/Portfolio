@@ -66,10 +66,12 @@ public class ChatController {
 		chatroomVO.setBuyer_id(buyer_id);
 		
 		ChatroomVO existedRoom = chatService.existedChatroom(chatroomVO);
+		
+		//이미 생성돼 있는 채팅방이 있을 경우 기존 채팅방으로 redirect
 		if (existedRoom != null) {
 			mav.setViewName("redirect:/chat/chatroomForm.do?chatroom_id="+existedRoom.getChatroom_id());
 		}
-		else {
+		else { //없을 경우 채팅방 정보 mav에 add
 			mav.setViewName(viewName);
 			seller_market_info = marketService.getMarketInfo(seller_id);
 			chatroomVO.setSeller_market_image(seller_market_info.getMarket_image());
@@ -88,7 +90,7 @@ public class ChatController {
 	
 	@RequestMapping(value="/chatroomForm.do", method= {RequestMethod.POST, RequestMethod.GET})
 	public ModelAndView chatroomForm(@RequestParam("chatroom_id") int chatroom_id,
-										HttpServletRequest request, HttpServletResponse response) throws Exception {
+									 HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		String viewName = (String) request.getAttribute("viewName");
 		ModelAndView mav = new ModelAndView(viewName);
@@ -115,10 +117,10 @@ public class ChatController {
 		MemberVO memberInfo = (MemberVO) session.getAttribute("memberInfo");
 		String member_id = memberInfo.getMember_id();
 		
-		List<ChatroomVO> chatroomList = chatService.getChatroomList(member_id);
+		List<ChatroomVO> chatroomList = chatService.getChatroomList(member_id); //멤버의 채팅방 리스트 가져옴
 		
-		List<MessageVO> lastMessageList = new ArrayList<MessageVO>();
-		int[] noreadSizeList = new int[chatroomList.size()];
+		List<MessageVO> lastMessageList = new ArrayList<MessageVO>(); //채팅방의 마지막 메시지를 담을 리스트
+		int[] noreadSizeList = new int[chatroomList.size()]; //읽지 않은 메시지의 개수를 담을 배열
 		
 		for (int i=0; i<chatroomList.size(); i++) {
 			int chatroom_id = chatroomList.get(i).getChatroom_id();

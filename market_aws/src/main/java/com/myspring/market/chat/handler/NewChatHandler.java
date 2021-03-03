@@ -71,6 +71,7 @@ public class NewChatHandler extends TextWebSocketHandler {
 				}	
 			}
 			
+			//기존 채팅방에 있는 사람들과도 채팅을 할 수 있도록 메시지를 보냄
 			for (SocketVO sess : ChatHandler.chatSessionList) {
 				if (chatroom_id == sess.getChatroom_id()) {
 					chatHandler.sendMessageToChatroom(chatroom_id, obj);
@@ -137,7 +138,6 @@ public class NewChatHandler extends TextWebSocketHandler {
 	}
 	
 	public void sendMessageToNewChatroom(int chatroom_id, JSONObject obj) throws IOException {
-		System.out.println("sendMessageToChatroom 함수 호출");
 		for (SocketVO sess : newChatSessionList) {
 			if (chatroom_id == sess.getChatroom_id()) {
 				sess.getSession().sendMessage(new TextMessage(obj.toJSONString()));

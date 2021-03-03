@@ -1,9 +1,6 @@
 package com.myspring.market.market.controller;
 
-import java.io.File;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -13,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,9 +21,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.myspring.market.chat.service.ChatService;
 import com.myspring.market.common.file.UploadController;
-import com.myspring.market.goods.controller.GoodsController;
 import com.myspring.market.goods.service.GoodsService;
 import com.myspring.market.goods.vo.GoodsVO;
 import com.myspring.market.goods.vo.ImageFileVO;
@@ -55,7 +49,7 @@ public class MarketController {
 	@Autowired
 	private UploadController uploadController;
 
-	
+	//나의 마켓 메인(마켓 정보, 찜 목록, 구매 목록, 리뷰 목록)
 	@RequestMapping(value="/myMarketMain.do", method= {RequestMethod.GET, RequestMethod.POST}) 
 	public ModelAndView myMarketMain(HttpServletRequest request, RedirectAttributes rttr) throws Exception {	
 		ModelAndView mav = new ModelAndView();
@@ -88,6 +82,7 @@ public class MarketController {
 		return mav;
 	}
 	
+	//회원 마켓 메인(마켓 정보, 리뷰 목록)
 	@RequestMapping(value="/marketMain.do", method=RequestMethod.POST)
 	public ModelAndView marketMain(@RequestParam("member_id") String member_id,
 								   HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -103,6 +98,7 @@ public class MarketController {
 		return mav;
 	}
 	
+	//마켓 이름 수정
 	@RequestMapping(value="/modifyMarketName.do", method=RequestMethod.POST)
 	@ResponseBody
 	public String modifyMarketName(@RequestParam("market_name") String market_name,
@@ -119,6 +115,7 @@ public class MarketController {
 		return "success";
 	}
 	
+	//마켓 이미지 수정
 	@RequestMapping(value="/modifyMarketImage.do", method=RequestMethod.POST)
 	public void modifyMarketImage(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
 		Map<String, String> marketImageMap = new HashMap<String, String>();

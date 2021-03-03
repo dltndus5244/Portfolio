@@ -1,29 +1,18 @@
 package com.myspring.market.common.file;
 
-import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-
-import com.amazonaws.util.IOUtils;
-import com.myspring.market.goods.vo.ImageFileVO;
 
 import net.coobird.thumbnailator.Thumbnails;
 
@@ -150,6 +139,7 @@ public class UploadController {
 		s3.createFolder(bucketName, folderPath);
 	}
 	
+	//상품 이미지 업로드
 	public void uploadGoodsImage(MultipartHttpServletRequest request, int goods_id) throws Exception {		
 		Iterator<String> fileNames = request.getFileNames();
 		while (fileNames.hasNext()) {
@@ -164,6 +154,7 @@ public class UploadController {
 		}			
 	}
 	
+	//마켓 이미지 업로드
 	public void uploadMarketImage(MultipartHttpServletRequest request, String member_id) throws Exception {		
 		Iterator<String> fileNames = request.getFileNames();
 		while (fileNames.hasNext()) {

@@ -10,11 +10,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<a href="#"><img width="150" src="${contextPath}/resources/image/logo.png" /></a>
+	<a href="#"><img width="50" src="${contextPath}/resources/image/market_logo.png" /></a>
 	<div style="padding-left:200px">
 		이수연 <br>
 	 	전화번호 : 010-4651-4527<br>  
 	 	이메일 : dltndus5244@naver.com <br>
+	 	깃허브 : https://github.com/dltndus5244/Portfolio
 	</div>
 </body>
 </html>

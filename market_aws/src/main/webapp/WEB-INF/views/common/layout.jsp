@@ -24,6 +24,7 @@ body {
 var session_id = "${memberInfo.member_id}";
 
 $(document).ready(function() {
+	//로그인 한 경우 LoginHandshakeInterceptor로 로그인 한 회원의 아이디를 보냄
 	if (session_id) {
 		var sock = new SockJS('http://3.130.107.103:8080/market_aws/notice');
 		sock.onmessage = onMessage;
@@ -33,6 +34,7 @@ $(document).ready(function() {
 	}
 });
 
+//메시지 알림창 띄우기
 function onMessage(evt) {
 	var data = evt.data;
 	toastr.info(data, {timeOut: 3000});

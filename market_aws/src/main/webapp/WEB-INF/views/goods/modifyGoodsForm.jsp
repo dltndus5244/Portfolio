@@ -16,6 +16,7 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
 $("document").ready(function() {
+	//거래지역 선택 selectBox
 	var area0 = ["시/도 선택","서울특별시","인천광역시","대전광역시","광주광역시","대구광역시","울산광역시","부산광역시","경기도","강원도","충청북도","충청남도","전라북도","전라남도","경상북도","경상남도","제주도"];
 	var area1 = ["강남구","강동구","강북구","강서구","관악구","광진구","구로구","금천구","노원구","도봉구","동대문구","동작구","마포구","서대문구","서초구","성동구","성북구","송파구","양천구","영등포구","용산구","은평구","종로구","중구","중랑구"];
 	var area2 = ["계양구","남구","남동구","동구","부평구","서구","연수구","중구","강화군","옹진군"];
@@ -34,7 +35,6 @@ $("document").ready(function() {
 	var area15 = ["거제시","김해시","마산시","밀양시","사천시","양산시","진주시","진해시","창원시","통영시","거창군","고성군","남해군","산청군","의령군","창녕군","하동군","함안군","함양군","합천군"];
 	var area16 = ["서귀포시","제주시","남제주군","북제주군"];
 
-	// 시/도 선택 박스 초기화
 	$("select[name^=goods_location1]").each(function() {
 		$selsido = $(this);
 		$.each(eval(area0), function() {
@@ -45,8 +45,8 @@ $("document").ready(function() {
 			}
 	  	})
 		
-	  	var area = "area"+$("option",$(this)).index($("option:selected",$(this))); // 선택지역의 구군 Array
-	  	var $gugun = $(this).next(); // 선택영역 군구 객체
+	  	var area = "area"+$("option",$(this)).index($("option:selected",$(this))); 
+	  	var $gugun = $(this).next();
 	  	
 	  	$.each(eval(area), function() {
 	  		if ('${goods.goods_location2}' == this) {
@@ -57,11 +57,10 @@ $("document").ready(function() {
    		});
 	 });
 	
-	 // 시/도 선택시 구/군 설정	
 	 $("select[name^=goods_location]").change(function() {
-	 	var area = "area"+$("option",$(this)).index($("option:selected",$(this))); // 선택지역의 구군 Array
-	  	var $gugun = $(this).next(); // 선택영역 군구 객체
-	  	$("option",$gugun).remove(); // 구군 초기화
+	 	var area = "area"+$("option",$(this)).index($("option:selected",$(this)));
+	  	var $gugun = $(this).next();
+	  	$("option",$gugun).remove(); 
 
 	  	if(area == "area0")
 	   		$gugun.append("<option value=''>구/군 선택</option>");
@@ -71,13 +70,13 @@ $("document").ready(function() {
 	   		});
 	  	}
 	 }); 
-	
 });
 
 window.onload = function() {
 	selectBoxInit();
 }
 
+//상품 카테고리 selectBox 초기화
 function selectBoxInit() {
 	var s_goods_sort = document.getElementById("goods_sort");
 	var option = s_goods_sort.options;
@@ -92,6 +91,7 @@ function selectBoxInit() {
 
 }
 
+//이미지 미리보기
 function readURL(input,preview) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -102,6 +102,7 @@ function readURL(input,preview) {
     }
 }
 
+//상품 이미지 삭제 함수
 function deleteImage(goods_id, image_id, filename) {
 	var form = document.createElement("form");
 	
@@ -131,6 +132,7 @@ function deleteImage(goods_id, image_id, filename) {
 }
 
 var cnt = 1;
+//이미지 추가하기 버튼 클릭 시 동적으로 추가해주는 함수
 function fn_addFile() {
 	var goods_id = "${goods.goods_id}";
 	var html = "<tr>";
@@ -145,6 +147,7 @@ function fn_addFile() {
 	cnt++;
 }
 
+//상품 이미지 추가 함수
 function addNewImageFile(filetype, goods_id, index) {
 	var form = document.getElementById("modifyImageForm");
     var formData = new FormData(form);
@@ -173,6 +176,7 @@ function addNewImageFile(filetype, goods_id, index) {
    	}
 }
 
+//상품 이미지 수정 함수
 function modifyImageFile(goods_id, image_id) {
 	 var form = document.getElementById("modifyImageForm");
 	 var formData = new FormData(form);
@@ -261,6 +265,7 @@ function modifyImageFile(goods_id, image_id) {
 		<input type="submit" class="btn" value="수정하기" />
 	</form>
 	<br>
+	
 	<form id="modifyImageForm" method="post" enctype="multipart/form-data">
 		<h3>상품이미지</h3>
 		<table>

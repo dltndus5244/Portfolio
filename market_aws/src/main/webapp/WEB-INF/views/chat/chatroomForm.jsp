@@ -15,31 +15,36 @@ body {
 	overflow-y:auto;
 }
 </style>
-<title>Insert title here</title>
+<title>채팅방</title>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
-	var sock = new SockJS('http://3.130.107.103:8080/market_aws/chat');
+	var sock = new SockJS('http://3.130.107.103:8080/market_aws/chat'); //소켓 생성
+
+	//소켓으로부터 메시지를 받은 경우 div(chatList)에 받은 내용(회원 아이디, 메시지)을 추가해줌
 	sock.onmessage = function(evt) {
 		var data = evt.data;
 		var d = JSON.parse(data);
+		
 		var member_id = d.member_id;
-		var session_id = "${memberInfo.member_id}";
 		var message = d.message;
 		
-		var buyer_id = "${chatroom.buyer_id}";
-		var seller_id = "${chatroom.seller_id}";
-		var youId = null;
+		var session_id = "${memberInfo.member_id}";
 		
+		var buyer_id = "${chatroom.buyer_id}";
 		var buyer_market_image = "${chatroom.buyer_market_image}";
+		var seller_id = "${chatroom.seller_id}";	
 		var seller_market_image = "${chatroom.seller_market_image}";
 
-		if (session_id == buyer_id)
+		var youId = null;
+		if (session_id == buyer_id) //로그인 한 회원이 구매자인 경우 상대방은 판매자임
 			youId = seller_id;
-		else if (session_id == seller_id)
+		else if (session_id == seller_id) //로그인 한 회원이 판매자인 경우 상대방은 구매자임
 			youId = buyer_id;
 		
 		var printHTML;
+		
+		//'나'와 '상대방'을 구분해서 메시지를 표시함
 		if (member_id == session_id) {
 			printHTML = "<div id='myChat'>";
 			printHTML += "<div class='my_ballon'>";
@@ -82,7 +87,9 @@ body {
 	var member_id = "${memberInfo.member_id}";
 	var noreadMessageList;
 	
+	//소켓이 생성될 때(채팅방에 들어올 때) 읽지 않은 메시지가 있다면 메시지를 읽음 상태로 변경
 	sock.onopen = function(e) {
+		//읽지 않은 메시지를 가져오는 ajax
 		$.ajax({
 			type : "post",
 			async : false, 
@@ -96,9 +103,10 @@ body {
 			},
 			error : function(data, textStatus) {
 				alert("에러가 발생했습니다."+data);
-			},
+			}
 		});	
 		
+		//읽지 않은 메시지가 있을 경우 메시지를 읽음 상태로 변경하는 ajax
 		if (noreadMessageList.length > 0) {
 			$.ajax({
 				type : "post",
@@ -108,16 +116,16 @@ body {
 					chatroom_id : chatroom_id,
 					message_receiver : member_id,
 				},
-				success : function(data, textStatus) {
-					
+				success : function(data, textStatus) {	
 				},
 				error : function(data, textStatus) {
 					alert("code:"+data.status+"\n"+"message:"+data.responseText+"\n"+"error:"+textStatus);
-				},
+				}
 			});	
 		}
 	}
 	
+	//메시지 전송 버튼 클릭 시 addMessage()와 sendMessage() 호출
 	$(function() {
 		$("#sendBtn").click(function() {
 			var message = document.getElementById("message").value;
@@ -131,6 +139,7 @@ body {
 	});     
 	
 	var message_receiver;
+	//DB에 메시지를 저장하는 함수
 	function addMessage() {
 		var message_sender = "${memberInfo.member_id}";
 		var message_contents = $("#message").val();
@@ -143,6 +152,7 @@ body {
 		else
 			message_receiver = buyer_id;
 		
+		//DB에 메시지를 저장하기 위해 필요한 정보(채팅방 아이디, 메시지 송신자/수신자, 메시지 내용)를 보내는 ajax
 		$.ajax({
 			type : "post",
 			async : false, 
@@ -158,14 +168,15 @@ body {
 			},
 			error : function(data, textStatus) {
 				alert("에러가 발생했습니다."+data);
-			},
+			}
 		});
 	}
 	
+	//소켓으로 메시지를 보내는 함수
 	function sendMessage() {
-		//websocket으로 메시지를 보내겠다.
 		var member_id = "${memberInfo.member_id}";
 		var message = $("#message").val();
+		
 		var data = {
 				chatroom_id : chatroom_id,
 				member_id : member_id,
@@ -179,9 +190,12 @@ body {
 </head>
 <body>
 	<div id="chatList" class="chatData">
+		<!-- 채팅헤드(메인화면으로 이동, 상품 이미지, 상품 이름, 상품 가격) -->
 		<div class="chatHead">
 			<div class="goChatMain">
-				<a href="${contextPath}/chat/getChatroomList.do"><img width="30" height="30" src="${contextPath}/resources/image/left-arrow.png" /></a>
+				<a href="${contextPath}/chat/getChatroomList.do">
+					<img width="30" height="30" src="${contextPath}/resources/image/left-arrow.png" />
+				</a>
 				<img style="margin-left:145px" width="30" height="30" src="${contextPath}/resources/image/chat.png" />
 			</div>
 			<div class="chatHeadImage">
@@ -192,8 +206,11 @@ body {
 				<fmt:formatNumber value="${goodsVO.goods_price}" type="number" />원
 			</div>
 		</div>
+		
+		<!-- 채팅 메시지 표시 -->
 		<c:forEach var="message" items="${messageList}">
 			<c:choose>
+				<!-- 로그인 한 회원이 메시지를 보낸 사람일 경우 myChat(오른쪽에 메시지 띄움) -->
 				<c:when test="${memberInfo.member_id == message.message_sender}">
 					<div id="myChat">
 						<div class="my_ballon">
@@ -201,6 +218,8 @@ body {
 						</div>
 					</div>
 				</c:when>
+				
+				<!-- 로그인 한 회원이 메시지를 받는 사람일 경우 yourChat(왼쪽에 메시지 띄움) -->
 				<c:otherwise>
 					<div id="yourChat">
 						<c:choose>
@@ -236,11 +255,14 @@ body {
 			</c:choose>
 		</c:forEach>
 	</div>	
+	
+	<!-- 메시지를 보내는 div -->
 	<div id="sendMessage">
 		<textarea style="border:none" id="message" rows="5" cols="45"></textarea>
 		<input type="submit" value="전송" id="sendBtn"/>
 	</div>
 </body>
+
 <script>
 var scroll = $('#chatList')[0].scrollHeight;
 $(document).ready(function() {

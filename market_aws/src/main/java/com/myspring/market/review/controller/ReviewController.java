@@ -1,6 +1,5 @@
 package com.myspring.market.review.controller;
 
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +7,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.myspring.market.chat.service.ChatService;
 import com.myspring.market.goods.service.GoodsService;
 import com.myspring.market.goods.vo.GoodsVO;
@@ -35,6 +31,7 @@ public class ReviewController {
 	@Autowired
 	private GoodsService goodsService;
 	
+	//구매자 선택 창
 	@RequestMapping(value="/buyerSelectForm.do", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> buyerSelectForm(@RequestParam("goods_id") int goods_id,
@@ -52,18 +49,17 @@ public class ReviewController {
 		buyerMap.put("chatMemberList", chatMemberList);
 		buyerMap.put("goods", goods);
 		
-		for (MarketVO market : chatMemberList) {
-			System.out.println(market.getMember_id() + "," + market.getMarket_image());
-		}
 		return buyerMap;
 	}
 	
+	//구매자 선택
 	@RequestMapping(value="/selectBuyerId.do", method=RequestMethod.POST)
 	public void selectBuyerId(@ModelAttribute("reviewVO") ReviewVO reviewVO,
 							  HttpServletRequest request, HttpServletResponse response) throws Exception {
 		reviewService.addReview(reviewVO);
 	}
 	
+	//리뷰 모달 창
 	@RequestMapping(value="/reviewModal.do", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> reviewModal(@RequestParam("goods_id") int goods_id,
@@ -77,6 +73,7 @@ public class ReviewController {
 		return reviewMap;
 	}
 	
+	//리뷰 등록
 	@RequestMapping(value="/writeReview.do", method=RequestMethod.POST)
 	public void writeReview(@ModelAttribute("reviewVO") ReviewVO reviewVO,
 							HttpServletRequest request, HttpServletResponse response) throws Exception {

@@ -54,6 +54,7 @@ public class ChatService {
 			String buyer_id = chatroomVO.getBuyer_id();
 			String seller_id = chatroomVO.getSeller_id();
 			
+			//판매자와 구매자의 마켓 이미지 정보를 가져옴
 			MarketVO buyer_market = marketDAO.selectMyMarketInfo(buyer_id);
 			MarketVO seller_market = marketDAO.selectMyMarketInfo(seller_id);
 			
@@ -135,9 +136,7 @@ public class ChatService {
 			for (int i=0; i<chatroomIdList.length; i++) {
 				int chatroom_id = chatroomIdList[i];
 				if (chatroom_id != 0) {
-					System.out.println("시작");
 					chatDAO.deleteMessage(chatroom_id);
-					System.out.println(chatroom_id + "메시지 삭제 완료");
 				}
 			}
 		}

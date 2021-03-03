@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>채팅방</title>
 <style type="text/css">
 body {
 	overflow-x:hidden; 
@@ -19,11 +19,8 @@ body {
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
-	//websocket을 지정한 URL로 연결
-	var sock = new SockJS('http://3.130.107.103:8080/market_aws/newChat');
-	//websocket 서버에서 메시지를 보내면 자동으로 실행된다.
+	var sock = new SockJS('http://3.130.107.103:8080/market_aws/newChat'); //소켓 생성
 	sock.onmessage = onMessage;
-	//websocket과 연결을 끊고 싶을 때 실행하는 메소드
 	
 	var count = 0;
 	$(function() {
@@ -31,6 +28,7 @@ body {
 			var message = document.getElementById("message").value;
 			if (message) {
 				count++;
+				//처음 메시지를 보내는 경우에만 채팅방을 생성하는 함수를 추가로 실행
 				if (count == 1) {
 					addChatroom();
 					addMessage();
@@ -44,9 +42,11 @@ body {
 	});     
 	
 	var chatroom_id = 0;
+	//DB에 채팅방을 생성해주는 함수 
 	function addChatroom() {
 		var goods_id = "${chatroom.goods_id}";
 		
+		//채팅방을 생성하기 위한 ajax
 		$.ajax({
 			type : "post",
 			async : false, 
@@ -59,11 +59,12 @@ body {
 			},
 			error : function(data, textStatus) {
 				alert("에러가 발생했습니다."+data);
-			},
+			}
 		});
 	}
 	
 	var message_receiver;
+	//DB에 메시지를 저장하기 위한 함수
 	function addMessage() {
 		var message_sender = "${memberInfo.member_id}";
 		var message_contents = $("#message").val();
@@ -76,6 +77,7 @@ body {
 		else
 			message_receiver = buyer_id;
 		
+		//DB에 메시지를 저장하기 위해 필요한 정보(채팅방 아이디, 메시지 송신자/수신자, 메시지 내용)를 보내는 ajax
 		$.ajax({
 			type : "post",
 			async : false, 
@@ -91,14 +93,15 @@ body {
 			},
 			error : function(data, textStatus) {
 				alert("에러가 발생했습니다."+data);
-			},
+			}
 		});
 	}
 	
+	//소켓으로 메시지를 보내는 함수
 	function sendMessage() {
-		//websocket으로 메시지를 보내겠다.
 		var member_id = "${memberInfo.member_id}";
 		var message = $("#message").val();
+		
 		var data = {
 				member_id : member_id,
 				message : message,
@@ -109,27 +112,30 @@ body {
 		sock.send(JSON.stringify(data));
 	}
 	
-	//evt 파라미터는 websocket이 보내준 데이터이다.
+	//소켓으로부터 메시지를 받은 경우 div(chatList)에 받은 내용(회원 아이디, 메시지)을 추가해줌
 	function onMessage(evt) {
 		var data = evt.data;
 		var d = JSON.parse(data);
+		
 		var member_id = d.member_id;
-		var session_id = "${memberInfo.member_id}";
 		var message = d.message;
+		
+		var session_id = "${memberInfo.member_id}";
 
 		var buyer_id = "${chatroom.buyer_id}";
-		var seller_id = "${chatroom.seller_id}";
-		var youId = null;
-		
-		if (session_id == buyer_id)
-			youId = seller_id;
-		else if (session_id == seller_id)
-			youId = buyer_id;
-		
 		var buyer_market_image = "${chatroom.buyer_market_image}";
+		var seller_id = "${chatroom.seller_id}";
 		var seller_market_image = "${chatroom.seller_market_image}";
-				
+		
+		var youId = null;
+		if (session_id == buyer_id) //로그인 한 회원이 구매자인 경우 상대방은 판매자임
+			youId = seller_id;
+		else if (session_id == seller_id) //로그인 한 회원이 판매자인 경우 상대방은 구매자임
+			youId = buyer_id;
+					
 		var printHTML;
+		
+		//'나'와 '상대방'을 구분해서 메시지를 표시함
 		if (member_id == session_id) {
 			printHTML = "<div id='myChat'>";
 			printHTML += "<div class='my_ballon'>";
@@ -169,9 +175,12 @@ body {
 </head>
 <body>
 	<div id="newChatList" class="chatData">
+		<!-- 채팅헤드(메인화면으로 이동, 상품 이미지, 상품 이름, 상품 가격) -->
 		<div class="chatHead">
 			<div class="goChatMain">
-				<a href="${contextPath}/chat/getChatroomList.do"><img width="30" height="30" src="${contextPath}/resources/image/left-arrow.png" /></a>
+				<a href="${contextPath}/chat/getChatroomList.do">
+					<img width="30" height="30" src="${contextPath}/resources/image/left-arrow.png" />
+				</a>
 				<img style="margin-left:145px" width="30" height="30" src="${contextPath}/resources/image/chat.png" />
 			</div>
 			<div class="chatHeadImage">
@@ -184,6 +193,8 @@ body {
 		</div>
 		<div class="clear"></div>
 	</div>	
+	
+	<!-- 메시지를 보내는 div -->
 	<div id="sendMessage">
 		<textarea style="border:none" id="message" rows="5" cols="45"></textarea>
 		<input type="submit" value="전송" id="sendBtn"/>
