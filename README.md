@@ -53,7 +53,7 @@
 
 -	상품 상세 페이지에서 찜 버튼을 클릭하여 원하는 상품을 찜 할 수 있습니다. 찜 한 상품은 마이페이지의 찜 목록에서 확인 할 수 있습니다.
 -	또한 찜 버튼을 다시 누르면 찜이 해제되고, 찜 목록에서도 삭제됩니다.
-<img src="https://user-images.githubusercontent.com/32029329/110285407-901f1200-8026-11eb-89a9-cb5277add561.jpg" width="70%" height="70%">
+<img src="https://user-images.githubusercontent.com/32029329/110291310-235c4580-802f-11eb-97c7-62222d219223.jpg" width="70%" height="70%">
 
 ### 1:1 채팅
 
