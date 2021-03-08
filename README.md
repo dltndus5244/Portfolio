@@ -20,10 +20,10 @@
 로그인/회원가입
 ---
 - 사용자 아이디와 비밀번호를 이용해 로그인이 가능합니다. 아이디 또는 비밀번호가 일치하지 않을 경우 alert창을 띄워줍니다.
-<img src="https://user-images.githubusercontent.com/32029329/110285284-5c43ec80-8026-11eb-9667-7872b3a99107.JPG" width="60%" height="60%">
+<img src="https://user-images.githubusercontent.com/32029329/110285284-5c43ec80-8026-11eb-9667-7872b3a99107.JPG" width="70%" height="70%">
 -	작성한 이메일로 인증번호를 전송하고 인증번호를 맞게 입력하면 회원가입이 가능합니다. 
-![2  회원가입](https://user-images.githubusercontent.com/32029329/110285388-8c8b8b00-8026-11eb-96ea-c5d03cac3ebf.JPG)
-![3  회원가입 이메일](https://user-images.githubusercontent.com/32029329/110285393-8dbcb800-8026-11eb-80ae-39c138c3003a.JPG)
+<img src="https://user-images.githubusercontent.com/32029329/110285388-8c8b8b00-8026-11eb-96ea-c5d03cac3ebf.JPG" width="70%" height="70%">
+<img src="https://user-images.githubusercontent.com/32029329/110285393-8dbcb800-8026-11eb-80ae-39c138c3003a.JPG" width="50%" height="50%">
 
 상품 등록/수정/삭제
 ---
