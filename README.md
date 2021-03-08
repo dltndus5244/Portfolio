@@ -1,5 +1,5 @@
 # USED MARKET | 중고마켓
-웹 사이트로 이동 ▶ http://3.130.107.103:8080/market/main/main.do
+웹 사이트로 이동 ▷ [중고마켓 | USED MARKET](http://3.130.107.103:8080/market/main/main.do)
 
 ## 프로젝트 소개
 
