@@ -56,9 +56,8 @@
 1:1 채팅
 ---
 -	채팅 메인 화면에서 자신의 채팅 목록을 확인할 수 있습니다. 또한 읽지 않은 메시지의 개수도 확인할 수 있습니다.
-<img src="https://user-images.githubusercontent.com/32029329/110285408-901f1200-8026-11eb-97ec-6407e0340566.jpg" width="70%" height="70%">
 -	채팅방 클릭 시 상품의 정보와 채팅 메시지를 확인할 수 있고, 채팅을 보낼 수 있습니다. 
-<img src="https://user-images.githubusercontent.com/32029329/110285410-90b7a880-8026-11eb-971d-868cd59b112a.jpg" width="70%" height="70%">
+<img src="https://user-images.githubusercontent.com/32029329/110289972-81882900-802d-11eb-8d19-5d095e75781b.jpg" width="70%" height="70%">
 -	이 때, 상대방이 채팅방에 접속중이 아니라면 메시지가 도착했다는 알림을 표시해줍니다.
 <img src="https://user-images.githubusercontent.com/32029329/110285412-90b7a880-8026-11eb-93e9-77b536edc93f.jpg" width="70%" height="70%">
 -	상품 상세 페이지에서 채팅 버튼을 누르면 새로운 채팅방을 생성할 수 있고 메시지를 보낼 수 있습니다. 
