@@ -19,7 +19,7 @@ body {
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
-	var sock = new SockJS('http://3.130.107.103:8080/market_aws/chat'); //소켓 생성
+	var sock = new SockJS('http://3.130.107.103:8080/market/chat'); //소켓 생성
 
 	//소켓으로부터 메시지를 받은 경우 div(chatList)에 받은 내용(회원 아이디, 메시지)을 추가해줌
 	sock.onmessage = function(evt) {
@@ -186,16 +186,24 @@ body {
 		
 		sock.send(JSON.stringify(data));
 	}
+	
+	function fn_chat_list() {
+		var url = "${contextPath}/chat/getChatroomList.do";
+	
+		var form = document.createElement("form");
+		document.body.appendChild(form);
+
+		form.action = url;
+		form.method = "post";
+		form.submit();
+	}
 </script>
 </head>
 <body>
 	<div id="chatList" class="chatData">
-		<!-- 채팅헤드(메인화면으로 이동, 상품 이미지, 상품 이름, 상품 가격) -->
 		<div class="chatHead">
 			<div class="goChatMain">
-				<a href="${contextPath}/chat/getChatroomList.do">
-					<img width="30" height="30" src="${contextPath}/resources/image/left-arrow.png" />
-				</a>
+				<a href="javascript:void(0);" onclick="fn_chat_list()"><img width="30" height="30" src="${contextPath}/resources/image/left-arrow.png" /></a>
 				<img style="margin-left:145px" width="30" height="30" src="${contextPath}/resources/image/chat.png" />
 			</div>
 			<div class="chatHeadImage">
@@ -206,11 +214,8 @@ body {
 				<fmt:formatNumber value="${goodsVO.goods_price}" type="number" />원
 			</div>
 		</div>
-		
-		<!-- 채팅 메시지 표시 -->
 		<c:forEach var="message" items="${messageList}">
 			<c:choose>
-				<!-- 로그인 한 회원이 메시지를 보낸 사람일 경우 myChat(오른쪽에 메시지 띄움) -->
 				<c:when test="${memberInfo.member_id == message.message_sender}">
 					<div id="myChat">
 						<div class="my_ballon">
@@ -218,8 +223,6 @@ body {
 						</div>
 					</div>
 				</c:when>
-				
-				<!-- 로그인 한 회원이 메시지를 받는 사람일 경우 yourChat(왼쪽에 메시지 띄움) -->
 				<c:otherwise>
 					<div id="yourChat">
 						<c:choose>
@@ -255,8 +258,6 @@ body {
 			</c:choose>
 		</c:forEach>
 	</div>	
-	
-	<!-- 메시지를 보내는 div -->
 	<div id="sendMessage">
 		<textarea style="border:none" id="message" rows="5" cols="45"></textarea>
 		<input type="submit" value="전송" id="sendBtn"/>

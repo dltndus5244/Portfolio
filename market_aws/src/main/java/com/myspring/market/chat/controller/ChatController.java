@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.myspring.market.chat.service.ChatService;
@@ -46,7 +47,7 @@ public class ChatController {
 	@Autowired
 	private MarketVO buyer_market_info;
 	
-	@RequestMapping(value="/newChatroomForm.do", method=RequestMethod.GET)
+	@RequestMapping(value="/newChatroomForm.do", method=RequestMethod.POST)
 	public ModelAndView newChatroomForm(@RequestParam("goods_id") int goods_id,
 								 HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -69,7 +70,7 @@ public class ChatController {
 		
 		//이미 생성돼 있는 채팅방이 있을 경우 기존 채팅방으로 redirect
 		if (existedRoom != null) {
-			mav.setViewName("redirect:/chat/chatroomForm.do?chatroom_id="+existedRoom.getChatroom_id());
+			return chatroomForm(existedRoom.getChatroom_id(), request, response);
 		}
 		else { //없을 경우 채팅방 정보 mav에 add
 			mav.setViewName(viewName);
@@ -83,21 +84,24 @@ public class ChatController {
 			
 			GoodsVO goodsVO = goodsService.selectGoodsDetailById(goods_id);
 			mav.addObject("goodsVO", goodsVO);
+			
+			return mav;
 		}
-		
-		return mav;
 	}
 	
-	@RequestMapping(value="/chatroomForm.do", method= {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value="/chatroomForm.do", method = RequestMethod.POST)
 	public ModelAndView chatroomForm(@RequestParam("chatroom_id") int chatroom_id,
 									 HttpServletRequest request, HttpServletResponse response) throws Exception {
-
 		String viewName = (String) request.getAttribute("viewName");
-		ModelAndView mav = new ModelAndView(viewName);
 		
+		if (viewName.equals("/chat/newChatroomForm"))
+			viewName = "/chat/chatroomForm";
+		
+		ModelAndView mav = new ModelAndView(viewName);
+
 		chatroomVO = chatService.getChatroom(chatroom_id);
 		List<MessageVO> messageList = chatService.getMessageList(chatroom_id);
-		
+
 		int goods_id = chatroomVO.getGoods_id();
 		GoodsVO goodsVO = goodsService.selectGoodsDetailById(goods_id);
 		
@@ -111,7 +115,7 @@ public class ChatController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/getChatroomList.do", method=RequestMethod.GET)
+	@RequestMapping(value="/getChatroomList.do", method=RequestMethod.POST)
 	public ModelAndView chatList(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession();
 		MemberVO memberInfo = (MemberVO) session.getAttribute("memberInfo");

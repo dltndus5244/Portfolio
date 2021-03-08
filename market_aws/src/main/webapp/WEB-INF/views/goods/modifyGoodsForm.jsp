@@ -70,6 +70,29 @@ $("document").ready(function() {
 	   		});
 	  	}
 	 }); 
+	 
+	//글 본문 글자 수 제한
+	 $('#i_goods_contents').on('keyup', function() {
+			if($(this).val().length > 500) {
+				alert("글자수는 500자로 이내로 제한됩니다.");
+				$(this).val($(this).val().substring(0, 500));
+			}
+	});
+	
+	//상품 가격 숫자만 입력되게
+	 $("input[name=goods_price]").keyup(function(event){ 
+		   if (!(event.key >= 0 && event.key <= 9)) {
+			   var inputVal = $(this).val();
+			   $(this).val(inputVal.replace(/[^0-9]/gi,''));
+		   }
+	  });
+	 
+	//상품 가격 글자 수 제한
+	 $('#i_goods_price').on('keyup', function() {
+			if($(this).val().length > 9) {
+				$(this).val($(this).val().substring(0, 9));
+			}
+	});
 });
 
 window.onload = function() {
@@ -100,6 +123,9 @@ function readURL(input,preview) {
         }
         reader.readAsDataURL(input.files[0]);
     }
+    
+    var fileName = input.value;
+	document.getElementById("add_btn").disabled = false;
 }
 
 //상품 이미지 삭제 함수
@@ -143,6 +169,11 @@ function fn_addFile() {
 	html += "</tr>";
 	
 	$("#imageTable").append(html);
+	
+	var file = $("#sub_image" + cnt).val();
+	if (!file) {
+		document.getElementById("add_btn").disabled = "disabled";
+	}
 	
 	cnt++;
 }
@@ -204,15 +235,15 @@ function modifyImageFile(goods_id, image_id) {
 		<table>
 			<tr>
 				<td>제목</td>
-				<td><input type="text" size="51" name="goods_title" value="${goods.goods_title}"></td>
+				<td><input type="text" size="51" maxlength="50" name="goods_title" value="${goods.goods_title}"></td>
 			</tr>
 			<tr>
 				<td>내용</td>
-				<td><textarea rows="20" cols="50" name="goods_contents">${goods.goods_contents}</textarea></td>
+				<td><textarea rows="20" cols="50" id="i_goods_contents" name="goods_contents">${goods.goods_contents}</textarea></td>
 			</tr>
 			<tr>
 				<td>가격</td>
-				<td><input type="text" name="goods_price" value="${goods.goods_price}"></td>
+				<td><input type="text" id="i_goods_price" name="goods_price" value="${goods.goods_price}"></td>
 			</tr>
 			<tr>
 				<td>상품상태</td>
@@ -303,7 +334,7 @@ function modifyImageFile(goods_id, image_id) {
 				</c:forEach>
 			</tbody>
 		</table>
-		<input type="button" value="이미지파일추가하기"  onClick="fn_addFile()"/>
+		<input type="button" value="이미지파일추가하기"  id="add_btn" onClick="fn_addFile()"/>
 	</form>
 </body>
 </body>

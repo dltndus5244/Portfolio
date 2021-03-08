@@ -49,6 +49,11 @@ function fn_overlapped() {
 	if (_id == '') {
 		alert("아이디를 입력하세요.");
 		return;
+	} 
+	
+	if (_id.length < 6) {
+		alert('아이디를 6자 이상으로 입력해주세요.');
+		return;
 	}
 	
 	//아이디 중복 검사 ajax
@@ -61,7 +66,6 @@ function fn_overlapped() {
 		success:function(data, textStatus) {
 			if (data == '') {
 				alert("사용할 수 있는 아이디입니다.");
-				$("#btnOverlapped").prop("disabled", true);
 				
 			} else {
 				alert("사용할 수 없는 아이디입니다.");
@@ -121,11 +125,6 @@ function addMember() {
 	}
 	else if (!email2) {
 		write = false;
-	}
-	
-	if (member_id && member_id.length < 6) {
-		alert('아이디를 6자 이상으로 입력해주세요.');
-		return;
 	}
 	
 	if (!email_auth && write == true) {

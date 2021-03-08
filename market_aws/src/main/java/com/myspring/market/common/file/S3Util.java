@@ -26,9 +26,9 @@ import com.amazonaws.services.s3.model.S3ObjectSummary;
 
 //아마존 서버와 연결하여 상호작용하기 위한 공통 메소드
 public class S3Util {
-	private String accessKey = "AKIAZMBAE5FG3UZSZHUX"; // 엑세스 키
-	private String secretKey = "9+104ay8ZoGbeT+b9qr6JCdhMhD3MvvSYAtqm1um "; // 보안 엑세스 키
-	String bucketName = "sooyeon-usedmarket";
+	private String accessKey = "액세스키"; 
+	private String secretKey = "보안 액세스키 ";  
+	String bucketName = "버킷이름";
 	private AmazonS3 conn;
 	
 	public S3Util() {
@@ -38,7 +38,7 @@ public class S3Util {
 		clientConfig.setProtocol(Protocol.HTTP);
 		
 		this.conn = new AmazonS3Client(credentials, clientConfig);
-		conn.setEndpoint("s3.us-east-2.amazonaws.com"); // 엔드포인트 설정 [ 아시아 태평양 서울 ] --나는 미국
+		conn.setEndpoint("s3.us-east-2.amazonaws.com"); 
 	}
 	
 	public List<Bucket> getBucketList() {

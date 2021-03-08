@@ -143,8 +143,24 @@
 		}
 		
 		var goods_id = "${goods.goods_id}";
-		window.open("${contextPath}/chat/newChatroomForm.do?goods_id="+goods_id, "newChatroom",  "width=410, height=600, left=300, top=50");
-
+		var url = "${contextPath}/chat/newChatroomForm.do";
+		
+		window.open("", "newChatroom", "width=410, height=600, left=300, top=50");
+		
+		var form = document.createElement("form");
+		
+		var i_goods_id = document.createElement("input");
+		i_goods_id.type = "hidden";
+		i_goods_id.name = "goods_id";
+		i_goods_id.value = goods_id;
+		
+		document.body.appendChild(form);
+		form.appendChild(i_goods_id);
+		
+		form.action = url;
+		form.method = "post";
+		form.target = "newChatroom";
+		form.submit();
 	}
 	
 	//상품 상세 창으로 이동
@@ -220,7 +236,6 @@
 				</c:otherwise>
 			</c:choose>
 			
-			<!-- 상품이 거래완료일 경우와 내가 등록한 상품일 경우에는 찜 버튼과 채팅 버튼을 보여주지 않음  -->
 			<c:choose>
 				<c:when test="${marketInfo.member_id != memberInfo.member_id && goods.goods_status != '거래완료'}">
 					<div id="goods_btn">
@@ -230,7 +245,6 @@
 							</c:if>
 						</c:forEach>
 						
-						<!-- 회원의 찜 목록에 있을 경우와 없을 경우를 다르게 표시해줌 -->
 						<c:choose>
 							<c:when test="${heartListIn == '있음' }">
 								<input id="heart_up_btn" type="button" value="❤ 찜 ${goods.heart_num}" onclick="fn_heart_up(${goods.goods_id})"  style="display:none"/>

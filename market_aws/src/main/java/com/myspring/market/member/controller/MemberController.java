@@ -154,7 +154,7 @@ public class MemberController {
 			authCode += (char) num;
 		}
 		
-		String setFrom = "dltndus5244@gmail.com";
+		String setFrom = "dltndus5244@naver.com";
 		String toMail = email;
 		String title = "[USED MARKET] 회원가입 인증 이메일 입니다.";
 		String content = "인증번호는 " + authCode + "입니다.";

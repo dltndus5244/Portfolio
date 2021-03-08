@@ -30,7 +30,16 @@ function category() {
 }
 
 function fn_chat_list() {
-	window.open("${contextPath}/chat/getChatroomList.do", "chatroomList", "width=410, height=600, left=500, top=50");
+	var url = "${contextPath}/chat/getChatroomList.do";
+	window.open("", "chatroomList", "width=410, height=600, left=300, top=50");
+	
+	var form = document.createElement("form");
+	document.body.appendChild(form);
+
+	form.action = url;
+	form.method = "post";
+	form.target = "chatroomList";
+	form.submit();
 }
 
 function listCategoryGoods(goods_sort) {
@@ -74,7 +83,7 @@ function login() {
 </head>
 		<div id="logo">
 			<a href="${contextPath}/main/main.do">
-				<img width="60" height="50" style="margin-left:50px" src="${contextPath}/resources/image/market_logo.png">
+				<img width="130" style="margin-left:50px" src="${contextPath}/resources/image/market_logo.png">
 			</a>
 		</div>
 		

@@ -77,7 +77,6 @@ function marketMain(member_id) {
 	    <input id="tab2" type="radio" name="tabs" class="tabs">
 	    <label for="tab2">마켓 후기  ${fn:length(reviewList)}</label>
 	
-		<!-- 회원이 등록한 상품 리스트 -->
 	    <section id="content1" class="tabs_content">
 	        <h3><span>상품</span> <span style="color:red">${fn:length(myGoodsList)}</span></h3>
 	        <br>
@@ -95,7 +94,6 @@ function marketMain(member_id) {
 	        </c:forEach>
 	    </section>
 	
-		<!-- 마켓 후기 -->
 	    <section id="content2" class="tabs_content">
 	        <h3><span>마켓 후기</span> <span style="color:red">${fn:length(reviewList)}</span></h3>
 	        <br>

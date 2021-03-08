@@ -19,14 +19,16 @@ body {
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<title>Insert title here</title>
+
+<title>중고마켓 | used market</title>
+<link rel="icon" href="${contextPath}/resources/image/favicon.png">
 <script type="text/javascript">
 var session_id = "${memberInfo.member_id}";
 
 $(document).ready(function() {
 	//로그인 한 경우 LoginHandshakeInterceptor로 로그인 한 회원의 아이디를 보냄
 	if (session_id) {
-		var sock = new SockJS('http://3.130.107.103:8080/market_aws/notice');
+		var sock = new SockJS('http://3.130.107.103:8080/market/notice');
 		sock.onmessage = onMessage;
 		sock.onopen = function(e) {
 			sock.send(session_id);

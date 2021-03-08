@@ -77,11 +77,11 @@ header {
 }
 header #logo {
 	margin-left: 220px; 
-	margin-top : 30px;
+	margin-top : 10px;
 	float: left;
 }
 header #search {
-	margin: 30px 0px 0px 190px; 
+	margin: 35px 0px 0px 170px; 
 	padding: 0px; 
 	float: left;
 }
@@ -106,14 +106,14 @@ header #search .btn1 {
 header #head_link {
 	font-size : 10px;
 	margin-right: 250px; 
-	margin-top : 35px;
+	margin-top : 40px;
 	float: right;
 }
 header #head_link ul {
 	list-style: none;
 }
 header #head_link li {
-	padding: 0px 8px; 
+	padding: 0px 5px; 
 	float: left;
 }
 #head_link .no_line {
@@ -123,8 +123,8 @@ header #head_link li {
 }
 header #category {
 	position : absolute;
-	top: 90px;
-	left: 230px;
+	top: 95px;
+	left: 275px;
 }
 header #category ul{
 	padding-left : 30px;
@@ -886,7 +886,6 @@ textarea {
 	width : 300px;
 	float : left;
 	margin-top : 20px;
-	background-color : pink;
 }
 .chatHead .chatHeadRemain h3 {
 	font-size : 15px;

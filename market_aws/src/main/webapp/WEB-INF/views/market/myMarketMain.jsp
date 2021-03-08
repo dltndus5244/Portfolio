@@ -42,6 +42,15 @@
 
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
+$("document").ready(function() {
+	//글 본문 글자 수 제한
+	 $('#r_review_contents').on('keyup', function() {
+			if($(this).val().length > 100) {
+				alert("글자수는 100자로 이내로 제한됩니다.");
+				$(this).val($(this).val().substring(0, 100));
+			}
+	});
+});
 
 //마켓 이름 수정 버튼 클릭 시 디자인 변경
 function abled_market_name() {
@@ -330,7 +339,12 @@ function fn_modify_status(index, goods_id) {
 			
 			for (var i=0; i<chatMemberList.length; i++) {
 				var marketInfo = chatMemberList[i];
-			 	html += "<img style='width:40px;height:40px;' class='profile' src='${contextPath}/file/thumbMarketImage_s3.do?member_id="+marketInfo.member_id+"&market_image="+marketInfo.market_image+"'>";
+				var market_image = marketInfo.market_image;
+				
+				if (!market_image)	
+					html += "<img style='width:40px;height:40px;' class='profile' src='${contextPath}/resources/image/shop.png'>";
+				else
+					html += "<img style='width:40px;height:40px;' class='profile' src='${contextPath}/file/thumbMarketImage_s3.do?member_id="+marketInfo.member_id+"&market_image="+marketInfo.market_image+"'>";
 				html += "<a href='javascript:select_buyer_id(\""+marketInfo.member_id+"\",\""+goods_id+"\")' style='margin-left:10px'>"+ marketInfo.member_id + "</a></br>";
 			}
 			
@@ -645,7 +659,6 @@ function delete_goods_alert() {
 <body>
 	<div class="market_main">
 		<form id="marketImageForm" enctype="multipart/form-data">
-			<!-- 마켓 이미지 -->
 			<div class="d_market_image">
 				<c:choose>
 						<c:when test="${not empty marketInfo.market_image}">
@@ -663,9 +676,8 @@ function delete_goods_alert() {
 				</div>
 			</div>
 			
-			<!-- 마켓 이름 -->
 			<div class="d_market_name">
-				<input type="text" style="font-weight:bold" id="market_name" class="market_name" value="${marketInfo.market_name}" disabled/>
+				<input type="text" maxlength="10" style="font-weight:bold" id="market_name" class="market_name" value="${marketInfo.market_name}" disabled/>
 				<input type="button" class="white_btn" id="enable_btn" value="마켓이름 수정" onclick="abled_market_name()"/>
 				<input type="button" class="white_btn" id="name_mod_btn" value="확인" onclick="modify_market_name()" style="display:none"/>
 			</div>
@@ -690,7 +702,6 @@ function delete_goods_alert() {
 	    <input id="tab5" type="radio" name="tabs" class="tabs">
 	    <label for="tab5">정보수정</label>
 
-		<!-- 회원이 등록한 상품 리스트 -->
 	    <section id="content1" class="tabs_content">
 	        <h3><span>상품</span> <span style="color:red">${fn:length(myGoodsList)}</span></h3>
 	        <table>
@@ -742,7 +753,6 @@ function delete_goods_alert() {
 	        </table>
 	    </section>
 	
-		<!-- 구매 리스트 -->
 	    <section id="content2" class="tabs_content">
 	        <h3><span>구매</span> <span style="color:red">${fn:length(buyerGoodsList)}</span></h3>
 	        <br>
@@ -768,7 +778,6 @@ function delete_goods_alert() {
 	        </c:choose>
 	    </section>
 	
-		<!-- 찜 리스트 -->
 	    <section id="content3" class="tabs_content">
 	        <h3><span>찜</span> <span style="color:red">${fn:length(memberHeartList)}</span></h3>
 	        <br>
@@ -786,7 +795,6 @@ function delete_goods_alert() {
 	        </c:forEach>
 	    </section>
 	    
-	    <!-- 마켓 후기 -->
 	    <section id="content4" class="tabs_content">
 	        <h3><span>후기</span> <span style="color:red">${fn:length(reviewList)}</span></h3>
 	        <br>
@@ -852,7 +860,6 @@ function delete_goods_alert() {
 	        </c:forEach>
 	    </section>
 	
-		<!-- 회원 정보 수정 -->
 	    <section id="content5" class="tabs_content">
 	        <h3>회원 정보 수정</h3>
 	        <form name="frm_mod_member">

@@ -54,16 +54,55 @@ $("document").ready(function() {
 	   		});
 	  	}
 	 });
+	 
+	 //글 본문 글자 수 제한
+	 $('#i_goods_contents').on('keyup', function() {
+			if($(this).val().length > 500) {
+				alert("글자수는 500자로 이내로 제한됩니다.");
+				$(this).val($(this).val().substring(0, 500));
+			}
+	});
+	 
+	 //상품 가격 숫자만 입력되게
+	 $("input[name=goods_price]").keyup(function(event){ 
+		   if (!(event.key >= 0 && event.key <= 9)) {
+			   var inputVal = $(this).val();
+			   $(this).val(inputVal.replace(/[^0-9]/gi,''));
+		   }
+	  });
+	 
+	//상품 가격 글자 수 제한
+	 $('#i_goods_price').on('keyup', function() {
+			if($(this).val().length > 9) {
+				$(this).val($(this).val().substring(0, 9));
+			}
+	});
+	
 });
 
 var cnt = 0;
 //이미지 추가하기 버튼 클릭 시 동적으로 추가해주는 함수
 function fn_addFile() {
+	if (cnt == 5) {
+		alert("파일은 최대 5장까지 첨부 가능합니다.");
+		document.getElementById("add_btn").disabled = "disabled";
+		return;
+	}
 	if (cnt == 0)
-		$("#d_file").append("<br>" + "<input type='file' name='main_image' id='f_main_image' />");
+		$("#d_file").append("<br>" + "<input type='file' name='main_image' id='f_main_image' onchange='fileUpload(this)'/>");
 	else 
-		$("#d_file").append("<br>" + "<input type='file' name='sub_image" + cnt + "'/>");
+		$("#d_file").append("<br>" + "<input type='file' name='sub_image" + cnt + "' id='f_sub_image" + cnt + "' onchange='fileUpload(this)'/>");	
+	
+	var file = $("#f_sub_image" + cnt).val();
+	if (!file) {
+		document.getElementById("add_btn").disabled = "disabled";
+	}
 	cnt++;
+}
+
+function fileUpload(obj) {
+	var fileName = obj.value;
+	document.getElementById("add_btn").disabled = false;
 }
 
 //상품 추가 함수
@@ -101,6 +140,8 @@ function fn_add_new_goods() {
 		form.submit();
 	}
 }
+
+
 </script>
 </head>
 <body>
@@ -109,7 +150,7 @@ function fn_add_new_goods() {
 		<table>
 			<tr>
 				<td>글 제목</td>
-				<td><input size="51" type="text" id="i_goods_title" name="goods_title"></td>
+				<td><input size="51" type="text" id="i_goods_title" name="goods_title" maxlength="50"></td>
 			</tr>
 			<tr>
 				<td>글 내용</td>
@@ -143,7 +184,7 @@ function fn_add_new_goods() {
 			</tr>
 			<tr>
 				<td>이미지 등록</td>
-				<td align="left"><input type="button" class="white_btn" value="파일 추가" onclick="fn_addFile()" /></td>
+				<td align="left"><input type="button" id="add_btn" class="white_btn" value="파일 추가" onclick="fn_addFile()" /></td>
 				<td><div id="d_file"></div></td>
 			</tr>
 		</table>

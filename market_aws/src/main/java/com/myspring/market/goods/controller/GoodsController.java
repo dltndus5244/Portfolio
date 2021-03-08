@@ -215,7 +215,7 @@ public class GoodsController {
 	}
 	
 	//상품 수정 창
-	@RequestMapping(value="/modifyGoodsForm.do", method= {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value="/modifyGoodsForm.do", method= RequestMethod.POST)
 	public ModelAndView modifyGoodsForm(@RequestParam("goods_id") int goods_id,
 										HttpServletRequest request, RedirectAttributes rttr) throws Exception {
 		ModelAndView mav = new ModelAndView();

@@ -54,7 +54,6 @@ function fn_chat_form(chatroom_id) {
 						<tr onclick="fn_chat_form(${chatroom.chatroom_id})" onmouseover="this.style.background='#F8F8F8'" onmouseout="this.style.background='white'">
 							<td style="width:50px;">
 								<c:choose>
-									<!-- 로그인 한 회원이 구매자인 경우 판매자의 마켓 이미지를 보여줌 -->
 									<c:when test="${memberInfo.member_id == chatroom.buyer_id}">
 										<c:choose>
 											<c:when test="${empty chatroom.seller_market_image}">
@@ -65,8 +64,8 @@ function fn_chat_form(chatroom_id) {
 													src="${contextPath}/file/thumbMarketImage_s3.do?member_id=${chatroom.seller_id}&market_image=${chatroom.seller_market_image}">
 											</c:otherwise>
 										</c:choose>
+										
 									</c:when>
-									<!-- 로그인 한 회원이 판매자인 경우 구매자의 마켓 이미지를 보여줌 -->
 									<c:when test="${memberInfo.member_id == chatroom.seller_id}">
 										<c:choose>
 											<c:when test="${empty chatroom.buyer_market_image}">
@@ -82,43 +81,35 @@ function fn_chat_form(chatroom_id) {
 							</td>
 							<td style="width:210px">
 								<c:choose>
-									<!-- 로그인 한 회원이 구매자인 경우 판매자의 아이디와 를 보여줌 -->
 									<c:when test="${memberInfo.member_id == chatroom.buyer_id}">
 										<p style="font-weight:bold">${chatroom.seller_id}</p>
+										<p style="color:#737373">${lastMessageList[status.index].message_contents}
 									</c:when>
-									<!-- 로그인 한 회원이 판매자인 경우 구매자의 아이디를 보여줌 -->
 									<c:when test="${memberInfo.member_id == chatroom.seller_id}">
 										<p style="font-weight:bold">${chatroom.buyer_id}</p>
+										<p style="color:#737373">${lastMessageList[status.index].message_contents}
 									</c:when>
-									<!-- 가장 최근 메시지를 보여줌 -->
-									<p style="color:#737373">${lastMessageList[status.index].message_contents}
 								</c:choose>
 							</td>
 							<td style="text-align:right">
 								<jsp:useBean id="now" class="java.util.Date"/>
 								<fmt:parseNumber value="${now.time / (1000*60*60*24)}" integerOnly="true" var="nowNumber"/>
 								<fmt:parseNumber value="${lastMessageList[status.index].message_senderTime.time / (1000*60*60*24)}" integerOnly="true" var="messageNumber"/>
-								
 								<p style="color:#BDBDBD; font-size:8px">
-									<!-- 현재 날짜와 가장 최근에 메시지를 보낸 날짜를 비교 -->
 									<c:choose>
-										<!-- 두 날짜가 같은 경우 메시지를 '보낸 시간'을 보여줌 -->
 										<c:when test="${(nowNumber - messageNumber) == 0}">
 											<fmt:formatDate value="${lastMessageList[status.index].message_senderTime}" pattern="HH:mm" var="messageTime" />
 											${messageTime}
 										</c:when>
-										<!-- 두 날짜가 하루 차이가 날 경우 '어제'라고 보여줌 -->
 										<c:when test="${(nowNumber - messageNumber) == 1}">
 											어제
 										</c:when>
-										<!-- 두 날짜가 하루 이상 차이가 날 경우 '메시지를 보낸 날짜'를 보여줌 -->
 										<c:when test="${(nowNumber - messageNumber) > 1}">
 											<fmt:formatDate value="${lastMessageList[status.index].message_senderTime}" pattern="yyyy-MM-dd" var="messageDate" />
 											${messageDate}
 										</c:when>
 									</c:choose>
 								</p>
-								<!-- 읽지 않은 메시지가 있을 경우 표시해줌 -->
 								<c:if test="${noreadSizeList[status.index] != 0}">
 									<div style="float:right; margin-top:3px" class="noreadCircle">${noreadSizeList[status.index]}</div>
 								</c:if>

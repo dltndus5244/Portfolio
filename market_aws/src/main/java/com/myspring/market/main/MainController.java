@@ -40,6 +40,7 @@ public class MainController {
 	public List<GoodsVO> scroll(@RequestParam("start") int start,
 								HttpServletRequest request, HttpServletResponse response) throws Exception {
 		List<GoodsVO> goodsList = goodsService.listAllGoods(start);
+	
 		return goodsList;
 	}
 	

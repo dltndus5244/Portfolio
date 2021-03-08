@@ -37,5 +37,5 @@ public class MemberDAO {
 	public void updateMyPw(MemberVO memberVO) throws DataAccessException {
 		sqlSession.update("mapper.member.updateMyPw", memberVO);
 	}
-
+	
 }
