@@ -59,7 +59,7 @@ public class GoodsController {
 		HttpSession session = request.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
 		
-		//Âò ¸ñ·Ï 
+		//ì°œ ëª©ë¡ 
 		if (memberVO != null) {
 			String member_id = memberVO.getMember_id();
 			List<HeartVO> memberHeartList = heartService.getMemberHeartList(member_id);
@@ -69,7 +69,7 @@ public class GoodsController {
 		return mav;
 	}
 	
-	//»óÇ° µî·Ï Ã¢
+	//ìƒí’ˆ ë“±ë¡ ì°½
 	@RequestMapping(value="/newGoodsForm.do", method=RequestMethod.GET)
 	public ModelAndView newGoodsForm(HttpServletRequest request, RedirectAttributes rttr) throws Exception {
 		HttpSession session = request.getSession();
@@ -82,7 +82,7 @@ public class GoodsController {
 			mav.setViewName(viewName);
 		} else {
 			mav.setViewName("redirect:/main/main.do");
-			rttr.addFlashAttribute("msg","·Î±×ÀÎÀÌ ÇÊ¿äÇÑ ¼­ºñ½ºÀÔ´Ï´Ù.");
+			rttr.addFlashAttribute("msg","ë¡œê·¸ì¸ì´ í•„ìš”í•œ ì„œë¹„ìŠ¤ì…ë‹ˆë‹¤.");
 		}
 		return mav;
 	}
@@ -112,7 +112,7 @@ public class GoodsController {
 		return fileList;
 	}
 	
-	//»óÇ° µî·Ï
+	//ìƒí’ˆ ë“±ë¡
 	@RequestMapping(value="/addNewGoods.do", method=RequestMethod.POST)
 	public void addNewGoods(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setContentType("text/html; charset=utf-8");
@@ -148,7 +148,7 @@ public class GoodsController {
 				uploadController.uploadGoodsImage(request, goods_id);
 				
 				message= "<script>";
-				message += " alert('»óÇ°À» µî·ÏÇß½À´Ï´Ù.');";
+				message += " alert('ìƒí’ˆì„ ë“±ë¡í–ˆìŠµë‹ˆë‹¤.');";
 				message +=" location.href='"+request.getContextPath()+"/main/main.do';";
 				message +=("</script>");
 				
@@ -158,7 +158,7 @@ public class GoodsController {
 		} catch (Exception e) {
 
 			message= "<script>";
-			message += " alert('¿À·ù°¡ ¹ß»ıÇß½À´Ï´Ù. ´Ù½Ã ½ÃµµÇØ ÁÖ¼¼¿ä');";
+			message += " alert('ì˜¤ë¥˜ê°€ ë°œìƒí–ˆìŠµë‹ˆë‹¤. ë‹¤ì‹œ ì‹œë„í•´ ì£¼ì„¸ìš”');";
 			message +=" location.href='"+request.getContextPath()+"/goods/newGoodsForm.do';";
 			message +=("</script>");
 			
@@ -168,7 +168,7 @@ public class GoodsController {
 		}
 	}
 	
-	//»óÇ° Âò °³¼ö Áõ°¡
+	//ìƒí’ˆ ì°œ ê°œìˆ˜ ì¦ê°€
 	@RequestMapping(value="/upGoodsHeartNum.do", method=RequestMethod.POST)
 	public void upGoodsHeartNum(@RequestParam("goods_id") int goods_id,
 								HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -178,7 +178,7 @@ public class GoodsController {
 		writer.print(heart_num);
 	}
 	
-	//»óÇ° Âò °³¼ö °¨¼Ò
+	//ìƒí’ˆ ì°œ ê°œìˆ˜ ê°ì†Œ
 	@RequestMapping(value="/downGoodsHeartNum.do", method=RequestMethod.POST)
 	public void downGoodsHeartNum(@RequestParam("goods_id") int goods_id,
 								HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -188,7 +188,7 @@ public class GoodsController {
 		writer.print(heart_num);
 	}
 	
-	//»óÇ° »èÁ¦
+	//ìƒí’ˆ ì‚­ì œ
 	@RequestMapping(value="/deleteGoods.do", method=RequestMethod.POST)
 	public void deleteGoods(@RequestParam("goods_id") int goods_id,
 							HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -200,7 +200,7 @@ public class GoodsController {
 		
 		String message = "";
 		message= "<script>";
-		message += " alert('»óÇ°À» »èÁ¦Çß½À´Ï´Ù.');";
+		message += " alert('ìƒí’ˆì„ ì‚­ì œí–ˆìŠµë‹ˆë‹¤.');";
 		message +=" location.href='"+request.getContextPath()+"/market/myMarketMain.do';";
 		message +=("</script>");
 		
@@ -214,7 +214,7 @@ public class GoodsController {
 		}
 	}
 	
-	//»óÇ° ¼öÁ¤ Ã¢
+	//ìƒí’ˆ ìˆ˜ì • ì°½
 	@RequestMapping(value="/modifyGoodsForm.do", method= RequestMethod.POST)
 	public ModelAndView modifyGoodsForm(@RequestParam("goods_id") int goods_id,
 										HttpServletRequest request, RedirectAttributes rttr) throws Exception {
@@ -230,12 +230,12 @@ public class GoodsController {
 			mav.setViewName(viewName);
 		} else {
 			mav.setViewName("redirect:/main/main.do");
-			rttr.addFlashAttribute("msg","·Î±×ÀÎÀÌ ÇÊ¿äÇÑ ¼­ºñ½ºÀÔ´Ï´Ù.");
+			rttr.addFlashAttribute("msg","ë¡œê·¸ì¸ì´ í•„ìš”í•œ ì„œë¹„ìŠ¤ì…ë‹ˆë‹¤.");
 		}
 		return mav;
 	}
 	
-	//»óÇ° ÀÌ¹ÌÁö »èÁ¦
+	//ìƒí’ˆ ì´ë¯¸ì§€ ì‚­ì œ
 	@RequestMapping(value="/removeGoodsImageFile.do", method=RequestMethod.POST)
 	public void removeGoodsImageFile(@RequestParam("image_id") int image_id,
 									 @RequestParam("goods_id") int goods_id,
@@ -255,7 +255,7 @@ public class GoodsController {
 		String message = null;
 		
 		message= "<script>";
-		message += " alert('ÀÌ¹ÌÁö¸¦ »èÁ¦Çß½À´Ï´Ù.');";
+		message += " alert('ì´ë¯¸ì§€ë¥¼ ì‚­ì œí–ˆìŠµë‹ˆë‹¤.');";
 		message +=" location.href='"+request.getContextPath()+"/goods/modifyGoodsForm.do?goods_id=" + goods_id + "';";
 		message +=("</script>");
 		
@@ -263,7 +263,7 @@ public class GoodsController {
 		out.flush();
 	}
 	
-	//»õ·Î¿î »óÇ° ÀÌ¹ÌÁö Ãß°¡
+	//ìƒˆë¡œìš´ ìƒí’ˆ ì´ë¯¸ì§€ ì¶”ê°€
 	@RequestMapping(value="/addNewGoodsImage.do", method=RequestMethod.POST)
 	public void addNewGoodsImage(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
 		Enumeration enu = request.getParameterNames();
@@ -298,7 +298,7 @@ public class GoodsController {
 		}
 	}
 	
-	//»óÇ° ÀÌ¹ÌÁö ¼öÁ¤
+	//ìƒí’ˆ ì´ë¯¸ì§€ ìˆ˜ì •
 	@RequestMapping(value="/modifyGoodsImageFile.do", method=RequestMethod.POST)
 	public void modifyGoodsImageFile(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
 		Enumeration enu = request.getParameterNames();
@@ -308,11 +308,12 @@ public class GoodsController {
 		while (enu.hasMoreElements()) {
 			String name = (String) enu.nextElement();
 			String value = request.getParameter(name);
-			imageMap.put(name, value); //goods_id, image_id
+			imageMap.put(name, value); //goods_id, image_id, originalFileName
 		}
 		
 		int goods_id = Integer.parseInt((String) imageMap.get("goods_id"));
 		int image_id = Integer.parseInt((String) imageMap.get("image_id"));
+		String originalFileName = (String) imageMap.get("originalFileName");
 
 		imageFileVO.setImage_id(image_id);
 
@@ -325,6 +326,9 @@ public class GoodsController {
 		try {
 			if (imageFileList != null && imageFileList.size() != 0) {
 				goodsService.modifyGoodsImageFile(imageFileVO);
+				
+				String filePath = "market/file_repo/" + goods_id + "/" + originalFileName;
+				uploadController.deleteFile(bucketName, filePath);
 				uploadController.uploadGoodsImage(request, goods_id);			
 			}
 		} catch (Exception e) {
@@ -332,7 +336,7 @@ public class GoodsController {
 		}
 	}
 	
-	//»óÇ° Á¤º¸ ¼öÁ¤(ÀÌ¹ÌÁö Á¦¿Ü)
+	//ìƒí’ˆ ì •ë³´ ìˆ˜ì •(ì´ë¯¸ì§€ ì œì™¸)
 	@RequestMapping(value="/modifyGoodsInfo.do", method=RequestMethod.POST)
 	public ModelAndView modifyGoodsInfo(@ModelAttribute("goodsVO") GoodsVO goodsVO,
 										HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -344,7 +348,7 @@ public class GoodsController {
 		return mav;
 	}
 	
-	//»óÇ° »óÅÂ º¯°æ(¿¹¾àÁß, ÆÇ¸ÅÁß, °Å·¡¿Ï·á)
+	//ìƒí’ˆ ìƒíƒœ ë³€ê²½(ì˜ˆì•½ì¤‘, íŒë§¤ì¤‘, ê±°ë˜ì™„ë£Œ)
 	@RequestMapping(value="/modifyGoodsStatus.do", method=RequestMethod.POST)
 	public void modifyGoodsStatus(@RequestParam("goods_status") String goods_status,
 								  @RequestParam("goods_id") int goods_id,
@@ -356,7 +360,7 @@ public class GoodsController {
 		goodsService.modifyGoodsStatus(statusMap);
 	}
 	
-	//»óÇ° °Ë»ö
+	//ìƒí’ˆ ê²€ìƒ‰
 	@RequestMapping(value="/searchGoods.do", method=RequestMethod.POST)
 	public ModelAndView searchGoods(@RequestParam(value="sort", required=false, defaultValue="new") String sort,
 									@RequestParam("keyword") String keyword,
@@ -388,7 +392,7 @@ public class GoodsController {
 		return mav;
 	}
 	
-	//½ºÅ©·Ñ ½Ã »óÇ° °Ë»ö
+	//ìŠ¤í¬ë¡¤ ì‹œ ìƒí’ˆ ê²€ìƒ‰
 	@ResponseBody
 	@RequestMapping(value="/scrollSearchGoods.do", method=RequestMethod.POST)
 	public List<GoodsVO> scrollSearchGoods(@RequestParam("sort") String sort,
