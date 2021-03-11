@@ -208,12 +208,14 @@ function addNewImageFile(filetype, goods_id, index) {
 }
 
 //상품 이미지 수정 함수
-function modifyImageFile(goods_id, image_id) {
+function modifyImageFile(goods_id, image_id, originalFileName) {
+	alert(originalFileName);
 	 var form = document.getElementById("modifyImageForm");
 	 var formData = new FormData(form);
 	
 	 formData.append("goods_id", goods_id);
 	 formData.append("image_id", image_id);
+	 formData.append("originalFileName", originalFileName);
 	 
 	 $.ajax({
 	   url: '${contextPath}/goods/modifyGoodsImageFile.do',
@@ -313,7 +315,7 @@ function modifyImageFile(goods_id, image_id) {
 								</td>
 								<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 								<td>
-									<input type="button" class="white_btn" value="수정" onclick="modifyImageFile(${item.goods_id}, ${item.image_id})"/>
+									<input type="button" class="white_btn" value="수정" onclick="modifyImageFile(${item.goods_id}, ${item.image_id}, '${item.filename}')"/>
 								</td>	
 							</c:when>
 							<c:otherwise>
@@ -325,7 +327,7 @@ function modifyImageFile(goods_id, image_id) {
 								</td>
 								<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 								<td>
-									<input type="button" class="white_btn" value="수정" onclick="modifyImageFile(${item.goods_id}, ${item.image_id})"/>
+									<input type="button" class="white_btn" value="수정" onclick="modifyImageFile(${item.goods_id}, ${item.image_id}, '${item.filename}')"/>
 									<input type="button" style="color:red" class="white_btn" value="삭제" onclick="deleteImage(${item.goods_id}, ${item.image_id},'${item.filename}')"/>
 								</td>	
 							</c:otherwise>
